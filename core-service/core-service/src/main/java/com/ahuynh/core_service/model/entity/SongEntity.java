@@ -49,9 +49,7 @@ public class SongEntity {
     @ManyToMany(mappedBy = "songs")
     private Set<TypeEntity> types = new HashSet<>();
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt;
+
 
     public SongEntity(String name, String avatar, String file, String lyrics, AlbumEntity album, String singer) {
         this.name = name;

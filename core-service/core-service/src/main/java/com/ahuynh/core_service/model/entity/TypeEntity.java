@@ -34,7 +34,7 @@ public class TypeEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    private String description;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "song_type"

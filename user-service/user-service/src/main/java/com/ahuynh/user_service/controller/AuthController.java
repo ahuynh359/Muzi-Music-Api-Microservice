@@ -82,7 +82,7 @@ public class AuthController {
         UserDto user = authService.login(request);
         return new ResponseEntity<>(
                 new LoginResponse(
-                        "Sign in successfully","",user), HttpStatus.CREATED);
+                        "Log in successfully",user), HttpStatus.CREATED);
     }
 
 
