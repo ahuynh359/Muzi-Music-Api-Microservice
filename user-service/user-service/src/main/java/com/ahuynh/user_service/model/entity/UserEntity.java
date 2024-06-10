@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Table(name = "user")
 @Getter
 @Setter
+@NoArgsConstructor
 public class UserEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +50,26 @@ public class UserEntity  {
             , joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
             , inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<RoleEntity> role = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_follow",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "followed_id")
+    )
+    private Set<UserEntity> following = new HashSet<>();
+
+    @ManyToMany(mappedBy = "following")
+    private Set<UserEntity> followers = new HashSet<>();
+
+    public UserEntity(String email, String password, String username, Set<RoleEntity> roles, String avatar, boolean enable) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.role = roles;
+        this.enabled = enable;
+        this.avatar = avatar;
+    }
 
     public void addRole(RoleEntity role) {
         this.role.add(role);

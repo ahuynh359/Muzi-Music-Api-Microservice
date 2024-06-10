@@ -18,5 +18,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByEmail(String email);
 
-
+    @Query("SELECT u FROM UserEntity u ORDER BY SIZE(u.followers) DESC LIMIT 10")
+    List<UserEntity> findHotUser();
 }

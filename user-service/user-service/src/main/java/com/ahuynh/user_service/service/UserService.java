@@ -1,9 +1,13 @@
 package com.ahuynh.user_service.service;
 
 import com.ahuynh.user_service.exception.EntityNotFoundException;
+import com.ahuynh.user_service.exception.ErrorCode;
+import com.ahuynh.user_service.exception.InvalidException;
 import com.ahuynh.user_service.exception.PasswordIsIncorrectException;
 import com.ahuynh.user_service.model.dto.UserDto;
 import com.ahuynh.user_service.model.entity.UserEntity;
+import com.ahuynh.user_service.model.entity.role.RoleEntity;
+import com.ahuynh.user_service.model.entity.role.RoleName;
 import com.ahuynh.user_service.model.mapper.RoleMapper;
 import com.ahuynh.user_service.model.mapper.UserMapper;
 import com.ahuynh.user_service.model.repository.RoleRepository;
@@ -15,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -29,69 +35,38 @@ public class UserService {
     private final UserMapper userMapper = new UserMapper();
 
 
-    //    public UserEntity save(String email, String password, String UserEntityname, MultipartFile avatar, boolean enable) {
-//        if (UserEntityRepository.existsByEmail(email)) {
-//            throw new CustomException("Email already exists");
-//        }
-//
-//        if (UserEntityRepository.existsByUserEntityname(UserEntityname)) {
-//            throw new CustomException("UserEntityname already exists");
-//        }
-//
-//        //Lưu UserEntity vào db
-//        String encodedPassword = passwordEncoder.encode(password);
-//        Set<Role> roles = new HashSet<>();
-//        if (UserEntityRepository.count() == 0) {
-//            roles.add(roleRepository.findByName(RoleName.ROLE_ADMIN)
-//                    .orElseThrow(() -> new CustomException("There is no role in db")));
-//            roles.add(roleRepository.findByName(RoleName.ROLE_UserEntity)
-//                    .orElseThrow(() -> new CustomException("There is no role in db")));
-//
-//        } else {
-//            roles.add(roleRepository.findByName(RoleName.ROLE_UserEntity)
-//                    .orElseThrow(() -> new CustomException("There is no role in db")));
-//        }
-//        String url = firebaseService.upload(avatar, "image/png");
-//        UserEntity UserEntity = new UserEntity(email, encodedPassword, UserEntityname, roles, url, enable);
-//
-//        return UserEntityRepository.save(UserEntity);
-//    }
-//
-//    public void deleteUserEntity(Long id) {
-//        UserEntityRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserEntity not exits id =" + id));
-//        UserEntityRepository.deleteById(id);
-//    }
-//
-//    public UserEntity updateUserEntity(Long iid, UserEntityRequest UserEntityRequest) {
-//        UserEntity updateUserEntity = UserEntityRepository.findById(iid).orElseThrow(() ->
-//                new ResourceNotFoundException("UserEntity not exits id =" + iid));
-//
-//        if (UserEntityRequest.getEmail() != null) {
-//
-//            updateUserEntity.setEmail(UserEntityRequest.getEmail());
-//        }
-//        if (UserEntityRequest.getUserEntityname() != null) {
-//
-//            updateUserEntity.setUserEntityname(UserEntityRequest.getUserEntityname());
-//        }
-//
-//        if (UserEntityRequest.getPassword() != null) {
-//            String encodedPassword = passwordEncoder.encode(UserEntityRequest.getPassword());
-//
-//            updateUserEntity.setPassword(encodedPassword);
-//        }
-//
-//
-//        return UserEntityRepository.save(updateUserEntity);
-//    }
-//
-//    public UserEntity updateEnable(Long id, boolean b) {
-//        UserEntity updateUserEntity = UserEntityRepository.findById(id).orElseThrow(() ->
-//                new ResourceNotFoundException("UserEntity not exits id =" + id));
-//        updateUserEntity.setEnabled(b);
-//        return UserEntityRepository.save(updateUserEntity);
-//    }
-//
+    public UserDto save(String email, String password, String username, MultipartFile avatar, boolean enable) {
+        if (userRepository.existsByEmail(email)) {
+            throw new InvalidException("Email already exists", ErrorCode.ERROR_EMAIL_REGISTERED);
+        }
+
+        if (userRepository.existsByUsername(username)) {
+            throw new InvalidException("User already exists", ErrorCode.ERROR);
+        }
+
+        //Lưu UserEntity vào db
+        Set<RoleEntity> roles = new HashSet<>();
+        if (userRepository.count() == 0) {
+            roles.add(roleRepository.findByName(RoleName.ROLE_ADMIN)
+                    .orElseThrow(() -> new InvalidException("There is no role in db", ErrorCode.ERROR)));
+            roles.add(roleRepository.findByName(RoleName.ROLE_USER)
+                    .orElseThrow(() -> new InvalidException("There is no role in db", ErrorCode.ERROR)));
+
+        } else {
+            roles.add(roleRepository.findByName(RoleName.ROLE_USER)
+                    .orElseThrow(() -> new InvalidException("There is no role in db", ErrorCode.ERROR)));
+        }
+        String url = firebaseService.upload(avatar, "image/png");
+        UserEntity user = new UserEntity(email, password, username, roles, url, enable);
+
+        return userMapper.convertToDto(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("UserEntity not exits id =" + id));
+        userRepository.deleteById(id);
+    }
+
     public List<UserDto> getAllUser() {
         return userMapper.convertToDtoList(userRepository.findAll());
     }
@@ -130,6 +105,25 @@ public class UserService {
         user.setAvatar(url);
         return userMapper.convertToDto(userRepository.save(user));
 
+    }
+
+    public UserDto lockUser(Long id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("User not exits id =" + id));
+        user.setEnabled(false);
+        return userMapper.convertToDto(userRepository.save(user));
+    }
+
+
+    public UserDto unlockUser(Long id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("User not exits id =" + id));
+        user.setEnabled(true);
+        return userMapper.convertToDto(userRepository.save(user));
+    }
+
+    public List<UserDto> getHotUser() {
+        return userMapper.convertToDtoList(userRepository.findHotUser());
     }
 
 //    public UserDto getHotUsers() {

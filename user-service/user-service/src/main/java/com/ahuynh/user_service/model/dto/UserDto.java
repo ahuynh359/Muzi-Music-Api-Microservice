@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode()
 public class UserDto  {
 
     private Long id;

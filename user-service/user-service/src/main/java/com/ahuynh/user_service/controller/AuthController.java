@@ -1,6 +1,7 @@
 package com.ahuynh.user_service.controller;
 
 import com.ahuynh.user_service.email.OnRegistrationEmailCompleteEvent;
+import com.ahuynh.user_service.model.dto.LoginResponse;
 import com.ahuynh.user_service.model.dto.UserDto;
 import com.ahuynh.user_service.model.entity.UserEntity;
 import com.ahuynh.user_service.model.entity.VerificationTokenEntity;
@@ -53,9 +54,9 @@ public class AuthController {
         UserDto user = authService.createUser(request);
         applicationEventPublisher.publishEvent(new OnRegistrationEmailCompleteEvent(userMapper.convertToEntity(user), getCurrentUrl(httpServletRequest)));
 
-        return new ResponseEntity<>(new ApiResponse
-                ("Sign up successfully",
-                        user), HttpStatus.OK);
+        return
+                new ResponseEntity<>(new ApiResponse
+                        ("Sign in success"), HttpStatus.OK);
     }
 
     /**
@@ -68,8 +69,7 @@ public class AuthController {
         VerificationTokenEntity verificationToken = verificationTokenService.getJwt(token);
         return
                 new ResponseEntity<>(new ApiResponse
-                        ("Verify email successfully",
-                                verificationToken), HttpStatus.OK);
+                        ("Verify email successfully"), HttpStatus.OK);
     }
 
     /**
@@ -81,9 +81,8 @@ public class AuthController {
     public ResponseEntity<?> signIn(@RequestBody LoginRequest request) {
         UserDto user = authService.login(request);
         return new ResponseEntity<>(
-                new ApiResponse(
-                        "Sign in successfully",
-                        user), HttpStatus.CREATED);
+                new LoginResponse(
+                        "Sign in successfully","",user), HttpStatus.CREATED);
     }
 
 
@@ -100,8 +99,7 @@ public class AuthController {
                 (user, getCurrentUrl(request)));
         return new ResponseEntity<>(
                 new ApiResponse(
-                        "Resent otp successfully",
-                        user), HttpStatus.CREATED);
+                        "Resent otp successfully"), HttpStatus.CREATED);
     }
 
 

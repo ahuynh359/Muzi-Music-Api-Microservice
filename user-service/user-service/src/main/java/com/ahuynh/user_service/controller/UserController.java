@@ -19,71 +19,45 @@ public class UserController {
 
     private final UserService userService;
 
-//    /**
-//     * Thêm người dùng chua lam xac thuc otp cho nay
-//     * ADMIN
-//     */
-//    @PostMapping()
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> addUser(@RequestParam("email") String email,
-//                                     @RequestParam("password") String password,
-//                                     @RequestParam("username") String username,
-//                                     @RequestParam("avatar") MultipartFile avatar,
-//                                     @RequestParam("enable") boolean enable) {
-//
-//        User user = userService.save(email, password, username, avatar, enable);
-//        return new ResponseEntity<>(new ApiResponse(true, "Create Successfully",
-//                user), HttpStatus.CREATED);
-//    }
-//
-//    /**
-//     * Xóa người dùng
-//     * ADMIN
-//     */
-//    @DeleteMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> deleteUser(@PathVariable(name = "id") Long id) {
-//        userService.deleteUser(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Delete Successfully",
-//                ""), HttpStatus.OK);
-//    }
-//
-//    /**
-//     * Sửa người dùng - ko có avatar
-//     * ADMIN, USER
-//     */
-//    @PutMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> updateUser(@PathVariable(name = "id") Long id,
-//                                        @RequestBody UserRequest userRequest) {
-//        User user = userService.updateUser(id, userRequest);
-//        return new ResponseEntity<>(new ApiResponse(true, "Update Successfully",
-//                user), HttpStatus.OK);
-//    }
-//
-//
-//    /**
-//     * Mở khóa người dùng
-//     * ADMIN
-//     */
-//    @PutMapping("/enable/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') ")
-//    public ResponseEntity<?> unlock(@PathVariable(name = "id") Long id) {
-//        User user = userService.updateEnable(id, true);
-//        return new ResponseEntity<>(new ApiResponse(true, "Update Successfully", objectMapper.convertValue(user, User.class)), HttpStatus.OK);
-//    }
-//
-//    /**
-//     * Khóa người dùng
-//     * ADMIN
-//     */
-//    @PutMapping("/disable/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') ")
-//    public ResponseEntity<?> lock(@PathVariable(name = "id") Long id) {
-//        User user = userService.updateEnable(id, false);
-//        return new ResponseEntity<>(new ApiResponse(true, "Update Successfully",
-//                user), HttpStatus.OK);
-//    }
+
+    @PostMapping()
+    public ResponseEntity<?> addUser(@RequestParam("email") String email,
+                                     @RequestParam("password") String password,
+                                     @RequestParam("username") String username,
+                                     @RequestParam("avatar") MultipartFile avatar,
+                                     @RequestParam("enable") boolean enable) {
+
+        return ResponseEntity.ok(userService.save(email, password, username, avatar, enable));
+    }
+
+    /**
+     * Xóa người dùng
+     * ADMIN
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable(name = "id") Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok("Delete User Ok");
+    }
+
+
+    /**
+     * Mở khóa người dùng
+     * ADMIN
+     */
+    @PutMapping("/unlock/{id}")
+    public ResponseEntity<?> unlock(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(userService.unlockUser(id));
+    }
+
+    /**
+     * Khóa người dùng
+     * ADMIN
+     */
+    @PutMapping("/lock/{id}")
+    public ResponseEntity<?> lockUser(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(userService.lockUser(id));
+    }
 
     /**
      * Lấy thông tin tất cả người dùng
@@ -92,7 +66,17 @@ public class UserController {
      */
     @GetMapping("/all")
     public ResponseEntity<?> getAllUser() {
-        return ResponseEntity.ok( userService.getAllUser());
+        return ResponseEntity.ok(userService.getAllUser());
+    }
+
+    /**
+     * Lấy ds tài khoản nổi bật
+     * ADMIN - USER
+     * List<UserDto>
+     */
+    @GetMapping("/hot")
+    public ResponseEntity<?> getHotUser() {
+        return ResponseEntity.ok(userService.getHotUser());
     }
 
 
@@ -113,7 +97,7 @@ public class UserController {
     @PutMapping("/change/device")
     public ResponseEntity<?> changeToken(@Valid @RequestBody ChangeDeviceTokenRequest request) {
         UserDto userDto = userService.changeDevice(request);
-        return new ResponseEntity<>(new ApiResponse("Success", userDto),
+        return new ResponseEntity<>(new ApiResponse("Success"),
                 HttpStatus.OK);
     }
 
@@ -129,14 +113,12 @@ public class UserController {
     /**
      * Thay đổi avatar
      * USER - ADMIN
-     *
      */
     @PutMapping("/change/avatar/{id}")
     public ResponseEntity<?> changeAvatar(@PathVariable("id") Long userId, MultipartFile avatar) {
-        return ResponseEntity.ok(userService.changeAvatar(userId,avatar));
+        return ResponseEntity.ok(userService.changeAvatar(userId, avatar));
 
     }
-
 
 
 }
