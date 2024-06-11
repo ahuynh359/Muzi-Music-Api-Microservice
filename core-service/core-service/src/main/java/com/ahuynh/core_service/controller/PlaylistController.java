@@ -1,6 +1,5 @@
 package com.ahuynh.core_service.controller;
 
-import com.ahuynh.core_service.model.dto.PlaylistDto;
 import com.ahuynh.core_service.service.FeignClientUser;
 import com.ahuynh.core_service.service.PlaylistService;
 import lombok.RequiredArgsConstructor;

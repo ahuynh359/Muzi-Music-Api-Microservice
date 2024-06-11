@@ -1,8 +1,8 @@
 package com.ahuynh.core_service.controller;
 
-import com.ahuynh.core_service.model.dto.SongDto;
 import com.ahuynh.core_service.model.entity.SongEntity;
 import com.ahuynh.core_service.model.rest.response.ApiResponse;
+import com.ahuynh.core_service.model.rest.response.SongResponse;
 import com.ahuynh.core_service.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,49 +19,42 @@ import java.util.List;
 public class SongController {
     private final SongService songService;
 
-//    /**
-//     * Thêm bài hát
-//     * ADMIN
-//     * SongResponse
-//     */
-//
-//    @PostMapping()
-//    public ResponseEntity<?> addSong(@RequestParam("name") String name,
-//                                     @RequestParam("avatar") MultipartFile avatar,
-//                                     @RequestParam("file") MultipartFile file,
-//                                     @RequestParam("lyrics") String lyrics,
-//                                     @RequestParam("albumId") Long albumId,
-//                                     @RequestParam("singer") String singer) {
-//
-//        Song song = songService.save(name, avatar, file, lyrics, albumId, singer);
-//
-//        return new ResponseEntity<>(new ApiResponse(true, "Create Successfully",
-//                objectMapper.convertValue(song, SongResponse.class)), HttpStatus.CREATED);
-//    }
-//
-//    /**
-//     * Lấy song by id
-//     * USER - ADMIN
-//     */
-//
-//    @GetMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getSongById(@PathVariable(name = "id") Long id) {
-//        Song song = songService.getSong(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", objectMapper.convertValue(song, SongResponse.class)), HttpStatus.OK);
-//    }
-//
-//    /**
-//     * Lấy het song
-//     * USER - ADMIN
-//     */
+    /**
+     * Thêm bài hát
+     * ADMIN
+     * SongResponse
+     */
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createSong(@RequestParam("name") String name,
+                                        @RequestParam("avatar") MultipartFile avatar,
+                                        @RequestParam("file") MultipartFile file,
+                                        @RequestParam("lyrics") String lyrics,
+                                        @RequestParam("albumId") Long albumId,
+                                        @RequestParam("singer") String singer) {
+
+        return new ResponseEntity<>(new ApiResponse("Create Successfully",
+                songService.createSong(name, avatar, file, lyrics, albumId, singer)), HttpStatus.CREATED);
+    }
+
+    /**
+     * Lấy song by id
+     * USER - ADMIN
+     */
+
+    @GetMapping("{id}/songs")
+    public ResponseEntity<?> getSongById(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(new ApiResponse("Successfully", songService.getSongById(id)), HttpStatus.OK);
+    }
+
+    /**
+     * Lấy het song
+     * USER - ADMIN
+     */
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllSong() {
-        List<SongEntity> songs = songService.getAllSong();
-        List<SongDto> result = SongDto.toDtoList(songs);
-
-        return new ResponseEntity<>(new ApiResponse("Successfully", result), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Successfully", songService.getAllSong()), HttpStatus.OK);
     }
 
 

@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "playlist")
 @Getter
@@ -25,6 +28,12 @@ public class PlaylistEntity {
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "song_playlist"
+            , joinColumns = @JoinColumn(name = "playlist_id", referencedColumnName = "id")
+            , inverseJoinColumns = @JoinColumn(name = "song_id", referencedColumnName = "id"))
+    private List<SongEntity> songs = new ArrayList<>();
 
 
     public PlaylistEntity(String name, Long userId) {

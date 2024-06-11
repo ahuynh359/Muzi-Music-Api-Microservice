@@ -1,9 +1,10 @@
 package com.ahuynh.user_service.controller;
 
-import com.ahuynh.user_service.model.dto.UserDto;
 import com.ahuynh.user_service.model.rest.request.ChangeDeviceTokenRequest;
 import com.ahuynh.user_service.model.rest.request.ChangePasswordRequest;
 import com.ahuynh.user_service.model.rest.response.ApiResponse;
+import com.ahuynh.user_service.model.rest.response.MessageResponse;
+import com.ahuynh.user_service.model.rest.response.UserResponse;
 import com.ahuynh.user_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,19 @@ public class UserController {
     private final UserService userService;
 
 
-    @PostMapping()
-    public ResponseEntity<?> addUser(@RequestParam("email") String email,
-                                     @RequestParam("password") String password,
-                                     @RequestParam("username") String username,
-                                     @RequestParam("avatar") MultipartFile avatar,
-                                     @RequestParam("enable") boolean enable) {
-
-        return ResponseEntity.ok(userService.save(email, password, username, avatar, enable));
+    /**
+     * Thêm user - co ca avatar
+     * ADMIN
+     * tra ve user dto
+     */
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser(@RequestParam("email") String email,
+                                        @RequestParam("password") String password,
+                                        @RequestParam("username") String username,
+                                        @RequestParam("avatar") MultipartFile avatar,
+                                        @RequestParam("enable") boolean enable) {
+        return new ResponseEntity<>(new ApiResponse("Success", userService.createUser(email, password, username, avatar, enable)),
+                HttpStatus.OK);
     }
 
     /**
@@ -37,7 +43,8 @@ public class UserController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "id") Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.ok("Delete User Ok");
+        return new ResponseEntity<>(new MessageResponse("Success"),
+                HttpStatus.OK);
     }
 
 
@@ -47,7 +54,8 @@ public class UserController {
      */
     @PutMapping("/unlock/{id}")
     public ResponseEntity<?> unlock(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.ok(userService.unlockUser(id));
+        return new ResponseEntity<>(new ApiResponse("Success", userService.unlockUser(id)),
+                HttpStatus.OK);
     }
 
     /**
@@ -56,7 +64,8 @@ public class UserController {
      */
     @PutMapping("/lock/{id}")
     public ResponseEntity<?> lockUser(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.ok(userService.lockUser(id));
+        return new ResponseEntity<>(new ApiResponse("Success", userService.lockUser(id)),
+                HttpStatus.OK);
     }
 
     /**
@@ -66,7 +75,8 @@ public class UserController {
      */
     @GetMapping("/all")
     public ResponseEntity<?> getAllUser() {
-        return ResponseEntity.ok(userService.getAllUser());
+        return new ResponseEntity<>(new ApiResponse("Success", userService.getAllUser()),
+                HttpStatus.OK);
     }
 
     /**
@@ -76,7 +86,10 @@ public class UserController {
      */
     @GetMapping("/hot")
     public ResponseEntity<?> getHotUser() {
-        return ResponseEntity.ok(userService.getHotUser());
+        return new ResponseEntity<>(new ApiResponse("Success", userService.getHotUser()),
+                HttpStatus.OK);
+
+
     }
 
 
@@ -87,7 +100,8 @@ public class UserController {
      */
     @GetMapping("/information/{id}")
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+        return new ResponseEntity<>(new ApiResponse("Success", userService.getUserById(id)),
+                HttpStatus.OK);
     }
 
     /**
@@ -95,9 +109,9 @@ public class UserController {
      * ADMIN - USER
      */
     @PutMapping("/change/device")
-    public ResponseEntity<?> changeToken(@Valid @RequestBody ChangeDeviceTokenRequest request) {
-        UserDto userDto = userService.changeDevice(request);
-        return new ResponseEntity<>(new ApiResponse("Success"),
+    public ResponseEntity<?> changeDevice(@Valid @RequestBody ChangeDeviceTokenRequest request) {
+        UserResponse response = userService.changeDevice(request);
+        return new ResponseEntity<>(new ApiResponse("Success", response),
                 HttpStatus.OK);
     }
 
@@ -107,7 +121,8 @@ public class UserController {
      */
     @PutMapping("/change/password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request) {
-        return ResponseEntity.ok(userService.changePassword(request));
+        return new ResponseEntity<>(new ApiResponse("Success", userService.changePassword(request)),
+                HttpStatus.OK);
     }
 
     /**
@@ -116,8 +131,8 @@ public class UserController {
      */
     @PutMapping("/change/avatar/{id}")
     public ResponseEntity<?> changeAvatar(@PathVariable("id") Long userId, MultipartFile avatar) {
-        return ResponseEntity.ok(userService.changeAvatar(userId, avatar));
-
+        return new ResponseEntity<>(new ApiResponse("Success", userService.changeAvatar(userId, avatar)),
+                HttpStatus.OK);
     }
 
 

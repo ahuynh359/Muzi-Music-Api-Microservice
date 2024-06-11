@@ -1,13 +1,13 @@
 package com.ahuynh.user_service.controller;
 
 import com.ahuynh.user_service.email.OnRegistrationEmailCompleteEvent;
-import com.ahuynh.user_service.model.dto.LoginResponse;
-import com.ahuynh.user_service.model.dto.UserDto;
 import com.ahuynh.user_service.model.entity.UserEntity;
 import com.ahuynh.user_service.model.entity.VerificationTokenEntity;
-import com.ahuynh.user_service.model.mapper.UserMapper;
 import com.ahuynh.user_service.model.rest.request.LoginRequest;
+import com.ahuynh.user_service.model.rest.request.SignUpRequest;
 import com.ahuynh.user_service.model.rest.response.ApiResponse;
+import com.ahuynh.user_service.model.rest.response.MessageResponse;
+import com.ahuynh.user_service.model.rest.response.UserResponse;
 import com.ahuynh.user_service.service.AuthService;
 import com.ahuynh.user_service.service.VerificationTokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,6 @@ public class AuthController {
     private final VerificationTokenService verificationTokenService;
 
     private final ObjectMapper objectMapper;
-    private final UserMapper userMapper = new UserMapper();
 
     public String getCurrentUrl(HttpServletRequest request) {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
@@ -47,59 +46,59 @@ public class AuthController {
     /**
      * Đăng kí
      * Ai cũng được
-     * Trả về UserDto - ko lay
+     * Trả về message
      */
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody UserDto request, final HttpServletRequest httpServletRequest) {
-        UserDto user = authService.createUser(request);
-        applicationEventPublisher.publishEvent(new OnRegistrationEmailCompleteEvent(userMapper.convertToEntity(user), getCurrentUrl(httpServletRequest)));
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest request, final HttpServletRequest httpServletRequest) {
+        UserEntity user = authService.createUser(request);
+        applicationEventPublisher.publishEvent(new OnRegistrationEmailCompleteEvent(user, getCurrentUrl(httpServletRequest)));
 
         return
-                new ResponseEntity<>(new ApiResponse
+                new ResponseEntity<>(new MessageResponse
                         ("Sign in success"), HttpStatus.OK);
     }
 
     /**
-     * Đăng kí xong thì verify email
+     * Verify email
      * Ai cũng được
-     * Trả về VerificationToken - ko lay
+     * Trả về message
      */
-    @GetMapping("/verifyEmail/{token}")
+    @GetMapping("/verify/{token}")
     public ResponseEntity<?> verifyEmail(@PathVariable("token") String token) {
         VerificationTokenEntity verificationToken = verificationTokenService.getJwt(token);
         return
-                new ResponseEntity<>(new ApiResponse
+                new ResponseEntity<>(new MessageResponse
                         ("Verify email successfully"), HttpStatus.OK);
     }
 
     /**
      * Đăng nhập
      * Ai cũng được
-     * Trả về token dang nhap
+     * Trả về user dang nhap
      */
     @PostMapping("/login")
     public ResponseEntity<?> signIn(@RequestBody LoginRequest request) {
-        UserDto user = authService.login(request);
-        return new ResponseEntity<>(
-                new LoginResponse(
-                        "Log in successfully",user), HttpStatus.CREATED);
+        UserResponse user = authService.login(request);
+        return
+                new ResponseEntity<>(new ApiResponse
+                        ("Verify email successfully", user), HttpStatus.OK);
     }
 
 
     /**
      * Resend otp
      * Ai cũng được
-     * Tra ve user - ko lay
+     * Tra ve message
      */
-    @PostMapping("/resend-otp/{email}")
+    @PostMapping("/resend/{email}")
     public ResponseEntity<?> resendOtp(@PathVariable String email,
                                        final HttpServletRequest request) {
         UserEntity user = authService.resendOtp(email);
         applicationEventPublisher.publishEvent(new OnRegistrationEmailCompleteEvent
                 (user, getCurrentUrl(request)));
         return new ResponseEntity<>(
-                new ApiResponse(
-                        "Resent otp successfully"), HttpStatus.CREATED);
+                new MessageResponse(
+                        "Resent otp successfully"), HttpStatus.OK);
     }
 
 

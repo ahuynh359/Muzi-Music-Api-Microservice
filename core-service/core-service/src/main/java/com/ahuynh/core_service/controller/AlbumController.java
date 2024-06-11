@@ -1,10 +1,12 @@
 package com.ahuynh.core_service.controller;
 
-import com.ahuynh.core_service.model.dto.AlbumDto;
-import com.ahuynh.core_service.model.dto.SongDto;
 import com.ahuynh.core_service.model.entity.AlbumEntity;
 import com.ahuynh.core_service.model.entity.SongEntity;
+import com.ahuynh.core_service.model.rest.request.UpdateAlbumRequest;
+import com.ahuynh.core_service.model.rest.request.UpdateSongRequest;
+import com.ahuynh.core_service.model.rest.response.AlbumResponse;
 import com.ahuynh.core_service.model.rest.response.ApiResponse;
+import com.ahuynh.core_service.model.rest.response.SongResponse;
 import com.ahuynh.core_service.service.AlbumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,24 +24,22 @@ public class AlbumController {
 
     private final AlbumService albumService;
     private final ObjectMapper objectMapper;
-//
-//    /**
-//     *Thêm Album
-//     * ADMIN
-//     *AlbumResponse
-//     */
-//
-//    @PostMapping()
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> addAlbum(@RequestParam("avatar") MultipartFile avatar,
-//                                      @RequestParam("name") String name,
-//                                      @RequestParam("description") String description) {
-//
-//        Album albumResponse = albumService.save(avatar, name, description);
-//        return new ResponseEntity<>
-//                (new ApiResponse(true, "Create Successfully",
-//                        objectMapper.convertValue(albumResponse, AlbumResponse.class)), HttpStatus.CREATED);
-//    }
+
+    /**
+     * Thêm Album
+     * ADMIN
+     * AlbumResponse
+     */
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createAlbum(@RequestParam("avatar") MultipartFile avatar,
+                                         @RequestParam("name") String name
+    ) {
+
+        return new ResponseEntity<>
+                (new ApiResponse("Create Successfully",
+                        albumService.createAlbum(avatar, name)), HttpStatus.CREATED);
+    }
 //
 //    /**
 //     * Lấy album theo id
@@ -61,7 +61,7 @@ public class AlbumController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllAlbum() {
         List<AlbumEntity> album = albumService.getAllAlbum();
-        List<AlbumDto> responses = AlbumDto.toResponseList(album);
+        List<AlbumResponse> responses = AlbumResponse.toResponseList(album);
         return new ResponseEntity<>(new ApiResponse("Successfully", responses), HttpStatus.OK);
     }
 //
@@ -86,7 +86,7 @@ public class AlbumController {
     @GetMapping("/{id}/songs")
     public ResponseEntity<?> getSongFromAlbum(@PathVariable(name = "id") Long id) {
         List<SongEntity> songs = albumService.getSongFromAlbum(id);
-        List<SongDto> responses = SongDto.toDtoList(songs);
+        List<SongResponse> responses = SongResponse.toResponseList(songs);
         return new ResponseEntity<>(new ApiResponse("Successfully",
                 responses), HttpStatus.OK);
     }
@@ -104,18 +104,17 @@ public class AlbumController {
 //    }
 //
 //
-//    /**
-//     * Update Alum
-//     * ADMIN
-//     *
-//     */
-//    @PutMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> updateAlbum(@PathVariable(name = "id") Long id, @RequestBody AlbumRequest newAlbum) {
-//        Album album = albumService.updateAlbum(id, newAlbum);
-//        return new ResponseEntity<>(new ApiResponse(true, "Update Successfully", objectMapper.convertValue(album, AlbumResponse.class)), HttpStatus.OK);
-//    }
-//
+
+    /**
+     * Update Alum
+     * ADMIN
+     */
+    @PutMapping("change/")
+    public ResponseEntity<?> updateAlbum(@RequestBody UpdateAlbumRequest request) {
+        return new ResponseEntity<>(new ApiResponse("Update Successfully",
+                albumService.updateAlbum(request)), HttpStatus.OK);
+    }
+
 //    /**
 //     * Thêm song to album
 //     * ADMIN

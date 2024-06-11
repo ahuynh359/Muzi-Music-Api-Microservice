@@ -1,6 +1,7 @@
 package com.ahuynh.core_service.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -35,7 +36,7 @@ public class TypeEntity {
     private String name;
 
 
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "song_type"
             , joinColumns = @JoinColumn(name = "type_id", referencedColumnName = "id")
@@ -43,4 +44,7 @@ public class TypeEntity {
     private Set<SongEntity> songs = new HashSet<>();
 
 
+    public TypeEntity(String name) {
+        this.name = name;
+    }
 }

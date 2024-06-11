@@ -13,4 +13,6 @@ import java.util.List;
 public interface AlbumRepository extends JpaRepository<AlbumEntity,Long> {
     @Query("SELECT a.songs from AlbumEntity a where a.id = :id")
     List<SongEntity> findSongById(Long id);
+
+    boolean existsByName(String name);
 }

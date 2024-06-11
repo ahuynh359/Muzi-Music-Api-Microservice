@@ -1,8 +1,12 @@
 package com.ahuynh.core_service.service;
 
 import com.ahuynh.core_service.exception.EntityNotFoundException;
+import com.ahuynh.core_service.exception.ErrorCode;
+import com.ahuynh.core_service.exception.InvalidException;
 import com.ahuynh.core_service.model.entity.AlbumEntity;
 import com.ahuynh.core_service.model.entity.SongEntity;
+import com.ahuynh.core_service.model.rest.request.UpdateAlbumRequest;
+import com.ahuynh.core_service.model.rest.response.AlbumResponse;
 import com.ahuynh.core_service.repository.AlbumRepository;
 import com.ahuynh.core_service.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +23,9 @@ public class AlbumService {
     public List<AlbumEntity> getAllAlbum() {
         return albumRepository.findAll();
     }
-//    private final ModelMapper modelMapper;
-//    private final FirebaseService firebaseService;
+
+    //    private final ModelMapper modelMapper;
+    private final FirebaseService firebaseService;
 //    private final SongRepository songRepository;
 
 //
@@ -43,38 +48,38 @@ public class AlbumService {
         albumRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Album not exits id =" + id.toString()));
         return albumRepository.findSongById(id);
     }
-//
+
+    //
 //    public void deleteAlbum(Long id) {
 //        albumRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Album not exits id =" + id.toString()));
 //        albumRepository.deleteById(id);
 //    }
 //
-//    public Album updateAlbum(Long iid, AlbumRequest newAlbum) {
-//        Album updatedAlbum = albumRepository.findById(iid).orElseThrow(() -> new ResourceNotFoundException("Album not exits id =" + iid.toString()));
-//        if (albumRepository.existsByName(newAlbum.getName())) {
-//            throw new DuplicateException("Album with name " + newAlbum.getName() + " already exists");
-//        }
-//
-//        if (newAlbum.getName() != null) {
-//            updatedAlbum.setName(newAlbum.getName());
-//        }
-//        if (newAlbum.getDescription() != null) {
-//            updatedAlbum.setDescription(newAlbum.getDescription());
-//        }
-//
-//        return albumRepository.save(updatedAlbum);
-//    }
-//
-//
-//    public Album save(MultipartFile avatar, String name, String description) {
-//        if (albumRepository.existsByName(name)) {
-//            throw new DuplicateException("Album with name " + name + " already exists");
-//        }
-//        String url = firebaseService.upload(avatar, "image/png");
-//        Album album = new Album(name, description, url);
-//
-//        return albumRepository.save(album);
-//    }
+    public AlbumResponse updateAlbum(UpdateAlbumRequest request) {
+        AlbumEntity updatedAlbum = albumRepository.findById(request.getId()).orElseThrow(() ->
+                new EntityNotFoundException("Album not exits id =" + request.getId().toString()));
+        if (albumRepository.existsByName(request.getName())) {
+            throw new InvalidException("Album with name " + request.getName() + " already exists",ErrorCode.ERROR);
+        }
+
+        if (request.getName() != null) {
+            updatedAlbum.setName(request.getName());
+        }
+
+
+        return AlbumResponse.toResponse(albumRepository.save(updatedAlbum));
+    }
+
+
+    public AlbumResponse createAlbum(MultipartFile avatar, String name) {
+        if (albumRepository.existsByName(name)) {
+            throw new InvalidException("Album with name " + name + " already exists", ErrorCode.ERROR);
+        }
+        String url = firebaseService.upload(avatar, "image/png");
+        AlbumEntity album = new AlbumEntity(name, url);
+
+        return AlbumResponse.toResponse(albumRepository.save(album));
+    }
 //
 //    public Album getAlbumByName(String name) {
 //        return albumRepository.findByName(name).orElseThrow(() ->

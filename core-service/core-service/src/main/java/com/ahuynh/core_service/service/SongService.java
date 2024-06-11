@@ -1,8 +1,11 @@
 package com.ahuynh.core_service.service;
 
-import com.ahuynh.core_service.model.dto.SongDto;
+import com.ahuynh.core_service.exception.EntityNotFoundException;
+import com.ahuynh.core_service.model.entity.AlbumEntity;
 import com.ahuynh.core_service.model.entity.SongEntity;
-import com.ahuynh.core_service.model.mapper.SongMapper;
+import com.ahuynh.core_service.model.rest.request.UpdateSongRequest;
+import com.ahuynh.core_service.model.rest.response.SongResponse;
+import com.ahuynh.core_service.repository.AlbumRepository;
 import com.ahuynh.core_service.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,87 +18,56 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SongService {
     private final SongRepository songRepository;
-    private final SongMapper songMapper = new SongMapper();
+    private final AlbumRepository albumRepository;
+    private final FirebaseService firebaseService;
 
-    public List<SongEntity> getAllSong() {
-        return songRepository.findAll();
+    public SongResponse createSong(String name, MultipartFile avatar, MultipartFile file, String lyrics, Long albumIb, String singer) {
+        AlbumEntity album = albumRepository.findById(albumIb).orElseThrow(() -> new EntityNotFoundException("No Album with " + albumIb));
+        String urlAvatar = firebaseService.upload(avatar, "image/png");
+        String urlFile = firebaseService.upload(file, "audio/mpeg");
+        SongEntity s = new SongEntity(name, urlAvatar, urlFile, lyrics, album, singer);
+
+        return SongResponse.toResponse(songRepository.save(s));
     }
-//    private final UserRepository userRepository;
-//    private final ModelMapper modelMapper;
-//    private final AlbumRepository albumRepository;
-//    private final FirebaseService firebaseService;
-//
-//    public Song save(String name, MultipartFile avatar, MultipartFile file, String lyrics, Long albumIb, String singer) {
-//        Album album = albumRepository.findById(albumIb).orElseThrow(() -> new ResourceNotFoundException("No Album with " + albumIb));
-//        String urlAvatar = firebaseService.upload(avatar, "image/png");
-//        String urlFile = firebaseService.upload(file, "audio/mpeg");
-//        Song s = new Song(name, urlAvatar, urlFile, lyrics, album,singer);
-//
-//        return songRepository.save(s);
-//    }
-//
-//    public Song getSong(Long id) {
-//        return songRepository.findById(id).orElseThrow(() ->
-//                new ResourceNotFoundException("Song with id " + id + " not found"));
-//    }
-//
-//    public void deleteSong(Long id) {
-//        songRepository.findById(id).orElseThrow(() ->
-//                new ResourceNotFoundException("Song with id " + id + " not found"));
-//        songRepository.deleteById(id);
-//    }
-//
-//    public Song updateSong(Long id, UpdateSongRequest newSong) {
-//        Song updatedSong = songRepository.findSongById(id).orElseThrow(()
-//                -> new ResourceNotFoundException("Song not exits id =" + id.toString()));
-//
-//        Album updatedAlbum =
-//                albumRepository.findById(newSong.getAlbumId()).orElseThrow(() -> new ResourceNotFoundException("Album not exits id =" + newSong.getAlbumId().toString()));
-//
-//        if (newSong.getName() != null) {
-//            updatedSong.setName(newSong.getName());
-//        }
-//        if (newSong.getAlbumId() != null) {
-//            updatedSong.setAlbum(updatedAlbum);
-//        }
-//        if (newSong.getLyrics() != null) {
-//            updatedSong.setLyrics(newSong.getLyrics());
-//        }
-//        if (newSong.getSinger() != null) {
-//            updatedSong.setLyrics(newSong.getSinger());
-//        }
-//
-//        return songRepository.save(updatedSong);
-//    }
-//
-//    public List<Song> getAllSong() {
-//        if (songRepository.count() == 0) {
-//            throw new ResourceNotFoundException("There is no song");
-//        }
-//        return songRepository.findAll();
-//    }
-//
-//
-//    public Song updateSongLove(Long userId, Long songId, int love) {
-//        Song updateSong = songRepository.findById(songId).orElseThrow(() ->
-//                new ResourceNotFoundException("Song with id " + songId + " not found"));
-//        User updateUser = userRepository.findById(userId).orElseThrow(() ->
-//                new ResourceNotFoundException("User with id " + userId + " not found"));
-//
-//        if (love == 1)
-//            updateUser.addLovedSong(updateSong);
-//        else updateUser.removeLovedSong(updateSong);
-//        return songRepository.save(updateSong);
-//
-//
-//    }
-//
-//    public List<Type> getTypeOfSong(Long id) {
-//        songRepository.findById(id).orElseThrow(() ->
-//                new ResourceNotFoundException("Song with id " + id + " not found"));
-//        return songRepository.findAllTypeById(id).orElseThrow(()
-//                -> new ResourceNotFoundException("There is no type in this song " + id.toString()));
-//    }
+
+    public SongEntity getSongById(Long id) {
+        return songRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("SongEntity with id " + id + " not found"));
+    }
+
+    public void deleteSong(Long id) {
+        songRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("SongEntity with id " + id + " not found"));
+        songRepository.deleteById(id);
+    }
+
+    public SongEntity updateSong(Long id, UpdateSongRequest request) {
+        SongEntity song = songRepository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException("SongEntity not exits id =" + id));
+
+        AlbumEntity updatedAlbum =
+                albumRepository.findById(request.getAlbumId()).orElseThrow(() ->
+                        new EntityNotFoundException("Album not exits id =" + request.getAlbumId().toString()));
+
+        if (request.getName() != null) {
+            song.setName(request.getName());
+        }
+        if (request.getAlbumId() != null) {
+            song.setAlbum(updatedAlbum);
+        }
+        if (request.getLyrics() != null) {
+            song.setLyrics(request.getLyrics());
+        }
+        if (request.getSinger() != null) {
+            song.setLyrics(request.getSinger());
+        }
+
+        return songRepository.save(song);
+    }
+
+    public List<SongResponse> getAllSong() {
+        return SongResponse.toResponseList(songRepository.findAll());
+    }
 
 
 }

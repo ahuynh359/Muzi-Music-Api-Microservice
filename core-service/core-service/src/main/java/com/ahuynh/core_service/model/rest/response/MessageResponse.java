@@ -1,12 +1,10 @@
-package com.ahuynh.user_service.model.dto;
+package com.ahuynh.core_service.model.rest.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginResponse {
+public class MessageResponse{
     private String message;
-    private UserDto data;
-
 }

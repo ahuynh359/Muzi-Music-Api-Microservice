@@ -4,16 +4,14 @@ import com.ahuynh.user_service.exception.EntityNotFoundException;
 import com.ahuynh.user_service.exception.ErrorCode;
 import com.ahuynh.user_service.exception.InvalidException;
 import com.ahuynh.user_service.exception.PasswordIsIncorrectException;
-import com.ahuynh.user_service.model.dto.UserDto;
 import com.ahuynh.user_service.model.entity.UserEntity;
 import com.ahuynh.user_service.model.entity.role.RoleEntity;
 import com.ahuynh.user_service.model.entity.role.RoleName;
-import com.ahuynh.user_service.model.mapper.RoleMapper;
-import com.ahuynh.user_service.model.mapper.UserMapper;
 import com.ahuynh.user_service.model.repository.RoleRepository;
 import com.ahuynh.user_service.model.repository.UserRepository;
 import com.ahuynh.user_service.model.rest.request.ChangeDeviceTokenRequest;
 import com.ahuynh.user_service.model.rest.request.ChangePasswordRequest;
+import com.ahuynh.user_service.model.rest.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,11 +29,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final FirebaseService firebaseService;
     private final RoleRepository roleRepository;
-    private final RoleMapper roleMapper = new RoleMapper();
-    private final UserMapper userMapper = new UserMapper();
 
 
-    public UserDto save(String email, String password, String username, MultipartFile avatar, boolean enable) {
+    public UserResponse createUser(String email, String password, String username, MultipartFile avatar, boolean enable) {
         if (userRepository.existsByEmail(email)) {
             throw new InvalidException("Email already exists", ErrorCode.ERROR_EMAIL_REGISTERED);
         }
@@ -59,7 +55,7 @@ public class UserService {
         String url = firebaseService.upload(avatar, "image/png");
         UserEntity user = new UserEntity(email, password, username, roles, url, enable);
 
-        return userMapper.convertToDto(user);
+        return UserResponse.toUserResponse(userRepository.save(user));
     }
 
     public void deleteUser(Long id) {
@@ -67,63 +63,61 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<UserDto> getAllUser() {
-        return userMapper.convertToDtoList(userRepository.findAll());
+    public List<UserResponse> getAllUser() {
+        return UserResponse.toResponseList(userRepository.findAll());
     }
 
-    public UserDto getUserById(Long id) {
-        return userMapper.convertToDto(userRepository.findById(id).orElseThrow(() ->
+    public UserResponse getUserById(Long id) {
+        return UserResponse.toUserResponse(userRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("User not exits id =" + id)));
     }
 
-    public UserDto changeDevice(ChangeDeviceTokenRequest request) {
+    public UserResponse changeDevice(ChangeDeviceTokenRequest request) {
         UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(() ->
                 new EntityNotFoundException("User not exits id =" + request.getUserId()));
         user.setDeviceToken(request.getDeviceToken());
-        return userMapper.convertToDto(userRepository.save(user));
+        return UserResponse.toUserResponse(userRepository.save(user));
     }
 
-    public UserDto changePassword(ChangePasswordRequest request) {
+    public UserResponse changePassword(ChangePasswordRequest request) {
         UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(() ->
                 new EntityNotFoundException("User not exits id =" + request.getUserId()));
         if (!request.getOldPassword().equals(user.getPassword())) {
             throw new PasswordIsIncorrectException("Old password is incorrect");
         }
 
-        if (!request.getOldPassword().equals(request.getNewPassword())) {
-            throw new PasswordIsIncorrectException("Password is not match");
-        }
+
         user.setPassword(request.getNewPassword());
 
-        return userMapper.convertToDto(userRepository.save(user));
+        return UserResponse.toUserResponse(userRepository.save(user));
     }
 
-    public UserDto changeAvatar(Long userId, MultipartFile avatar) {
+    public UserResponse changeAvatar(Long userId, MultipartFile avatar) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 new EntityNotFoundException("User not exits id =" + userId));
         String url = firebaseService.upload(avatar, "image/png");
         user.setAvatar(url);
-        return userMapper.convertToDto(userRepository.save(user));
+        return UserResponse.toUserResponse(userRepository.save(user));
 
     }
 
-    public UserDto lockUser(Long id) {
+    public UserResponse lockUser(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("User not exits id =" + id));
         user.setEnabled(false);
-        return userMapper.convertToDto(userRepository.save(user));
+        return UserResponse.toUserResponse(userRepository.save(user));
     }
 
 
-    public UserDto unlockUser(Long id) {
+    public UserResponse unlockUser(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("User not exits id =" + id));
         user.setEnabled(true);
-        return userMapper.convertToDto(userRepository.save(user));
+        return UserResponse.toUserResponse(userRepository.save(user));
     }
 
-    public List<UserDto> getHotUser() {
-        return userMapper.convertToDtoList(userRepository.findHotUser());
+    public List<UserResponse> getHotUser() {
+        return UserResponse.toResponseList(userRepository.findHotUser());
     }
 
 //    public UserDto getHotUsers() {

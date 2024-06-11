@@ -1,6 +1,7 @@
 package com.ahuynh.user_service.model.entity;
 
 import com.ahuynh.user_service.model.entity.role.RoleEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -51,6 +52,7 @@ public class UserEntity  {
             , inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<RoleEntity> role = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "user_follow",
@@ -59,6 +61,7 @@ public class UserEntity  {
     )
     private Set<UserEntity> following = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "following")
     private Set<UserEntity> followers = new HashSet<>();
 

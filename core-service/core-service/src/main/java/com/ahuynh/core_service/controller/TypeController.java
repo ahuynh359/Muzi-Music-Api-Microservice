@@ -1,11 +1,13 @@
 package com.ahuynh.core_service.controller;
 
-import com.ahuynh.core_service.model.dto.TypeDto;
+import com.ahuynh.core_service.model.entity.SongEntity;
 import com.ahuynh.core_service.model.entity.TypeEntity;
+import com.ahuynh.core_service.model.rest.request.TypeRequest;
 import com.ahuynh.core_service.model.rest.response.ApiResponse;
+import com.ahuynh.core_service.model.rest.response.MessageResponse;
+import com.ahuynh.core_service.model.rest.response.SongResponse;
+import com.ahuynh.core_service.model.rest.response.TypeResponse;
 import com.ahuynh.core_service.service.TypeService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,55 +21,62 @@ import java.util.List;
 public class TypeController {
 
     private final TypeService typeService;
-    private final ObjectMapper objectMapper;
-//
-//    @PostMapping()
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> addType(@Valid @RequestBody TypeRequest request) {
-//
-//        Type type = typeService.save(request);
-//        return new ResponseEntity<>(new ApiResponse(true, "Create Successfully",
-//                objectMapper.convertValue(type, TypeResponse.class)), HttpStatus.CREATED);
-//    }
-//
-//    @GetMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getTypeById(@PathVariable(name = "id") Long id) {
-//        Type type = typeService.getType(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", objectMapper.convertValue(type, TypeResponse.class)), HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> deleteType(@PathVariable(name = "id") Long id) {
-//        typeService.deleteType(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Delete Successfully", ""), HttpStatus.OK);
-//    }
-//
-//    @PutMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> updateType(@PathVariable(name = "id") Long id, @RequestBody TypeRequest request) {
-//        Type type = typeService.updateType(id, request);
-//        return new ResponseEntity<>(new ApiResponse(true, "Update  Successfully",
-//                objectMapper.convertValue(type, TypeResponse.class)), HttpStatus.OK);
-//    }
+    /**
+     * Them type
+     * ADMIN
+     * Type Response
+     */
+    @PostMapping("/create")
+    public ResponseEntity<?> createType(@RequestBody TypeRequest request) {
+        TypeEntity type = typeService.createType(request);
+        return new ResponseEntity<>(new ApiResponse("Create Successfully",
+                TypeResponse.toResponse(type)), HttpStatus.CREATED);
+    }
 
+    /**
+     * Xoa type
+     * ADMIN
+     * message
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteType(@PathVariable(name = "id") Long id) {
+        typeService.deleteType(id);
+        return new ResponseEntity<>(new MessageResponse("Delete Successfully"), HttpStatus.OK);
+    }
+
+
+    /**
+     * Sua type
+     * ADMIN
+     * TypeResponse
+     */
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateType(@PathVariable(name = "id") Long id, @RequestBody TypeRequest request) {
+        TypeEntity type = typeService.updateType(id, request);
+        return new ResponseEntity<>(new ApiResponse("Update  Successfully",
+                TypeResponse.toResponse(type)), HttpStatus.OK);
+    }
+
+    /**
+     * Lay tat ca type
+     * ADMIN - USER
+     * List<TypeResponse>
+     */
     @GetMapping("/all")
     public ResponseEntity<?> getAllType() {
         List<TypeEntity> type = typeService.getAllType();
-        List<TypeDto> response = TypeDto.toDtoList(type);
-        return new ResponseEntity<>(new ApiResponse("Successfully", response), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Successfully", TypeResponse.toResponseList(type)), HttpStatus.OK);
     }
 
-//
-//    @GetMapping("/songs/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getSongFromType(@PathVariable(name = "id") Long id) {
-//        List<Song> songs = typeService.getSongFromType(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", songs), HttpStatus.OK);
-//    }
-
-
+    /**
+     * Lay song from type
+     * List<SongResponse>
+     */
+    @GetMapping("/{id}/songs")
+    public ResponseEntity<?> getSongFromType(@PathVariable(name = "id") Long id) {
+        List<SongEntity> songs = typeService.getSongFromType(id);
+        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponseList(songs)), HttpStatus.OK);
+    }
 
 
 }
