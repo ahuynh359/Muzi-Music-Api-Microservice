@@ -88,9 +88,9 @@ public class SongService {
 
 
 
-    public List<SongEntity> getTop3Song() {
+    public List<SongEntity> getTop5Song() {
 
-        return songRepository.findTop3ByOrderByListenDesc();
+        return songRepository.findTop5ByOrderByListenDesc();
     }
 
     public List<SongEntity> getListSongById(List<Long> id) {

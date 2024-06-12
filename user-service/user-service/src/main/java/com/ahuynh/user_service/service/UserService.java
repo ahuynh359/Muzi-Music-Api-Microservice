@@ -9,6 +9,7 @@ import com.ahuynh.user_service.model.entity.role.RoleEntity;
 import com.ahuynh.user_service.model.entity.role.RoleName;
 import com.ahuynh.user_service.model.repository.RoleRepository;
 import com.ahuynh.user_service.model.repository.UserRepository;
+import com.ahuynh.user_service.model.rest.request.AvatarRequest;
 import com.ahuynh.user_service.model.rest.request.ChangeDeviceTokenRequest;
 import com.ahuynh.user_service.model.rest.request.ChangePasswordRequest;
 import com.ahuynh.user_service.model.rest.response.SongResponse;
@@ -94,11 +95,11 @@ public class UserService {
         return UserResponse.toUserResponse(userRepository.save(user));
     }
 
-    public UserResponse changeAvatar(Long userId, MultipartFile avatar) {
+    public UserResponse changeAvatar(Long userId, AvatarRequest request) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 new EntityNotFoundException("User not exits id =" + userId));
-        String url = firebaseService.upload(avatar, "image/png");
-        user.setAvatar(url);
+        //String url = firebaseService.upload(avatar, "image/png");
+        user.setAvatar(request.getUrl());
         return UserResponse.toUserResponse(userRepository.save(user));
 
     }
@@ -140,14 +141,17 @@ public class UserService {
     public UserEntity loveSong(Long userId, Long songId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 new EntityNotFoundException("Not found " + userId.toString()));
-        user.addLoveSong(songId);
+        if (user.getLovedSongId().contains(songId)) {
+            user.removeLoveSong(songId);
+        } else
+            user.addLoveSong(songId);
         return userRepository.save(user);
     }
 
-    public UserEntity unloveSong(Long userId, Long songId) {
+
+    public boolean isLoveSong(Long userId, Long songId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 new EntityNotFoundException("Not found " + userId.toString()));
-        user.removeLoveSong(songId);
-        return userRepository.save(user);
+        return user.getLovedSongId().contains(songId);
     }
 }

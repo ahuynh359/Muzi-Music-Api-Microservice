@@ -80,9 +80,9 @@ public class SongController {
      */
 
 
-    @GetMapping("/top-3")
-    public ResponseEntity<?> getTop3Song() {
-        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponseList(songService.getTop3Song())), HttpStatus.OK);
+    @GetMapping("/top")
+    public ResponseEntity<?> getTop5Song() {
+        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponseList(songService.getTop5Song())), HttpStatus.OK);
     }
 
 

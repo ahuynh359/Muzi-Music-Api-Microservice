@@ -28,5 +28,10 @@ public class NotificationEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt = Instant.now();
 
+    public NotificationEntity(Long userId, String content){
+        this.userId = userId;
+        this.content = content;
+    }
+
 
 }

@@ -24,5 +24,5 @@ public interface SongRepository extends JpaRepository<SongEntity, Long> {
 
 
 
-    List<SongEntity> findTop3ByOrderByListenDesc();
+    List<SongEntity> findTop5ByOrderByListenDesc();
 }

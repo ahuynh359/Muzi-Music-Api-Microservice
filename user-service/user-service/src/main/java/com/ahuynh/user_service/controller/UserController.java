@@ -1,5 +1,6 @@
 package com.ahuynh.user_service.controller;
 
+import com.ahuynh.user_service.model.rest.request.AvatarRequest;
 import com.ahuynh.user_service.model.rest.request.ChangeDeviceTokenRequest;
 import com.ahuynh.user_service.model.rest.request.ChangePasswordRequest;
 import com.ahuynh.user_service.model.rest.response.ApiResponse;
@@ -132,9 +133,9 @@ public class UserController {
      * Thay đổi avatar
      * USER - ADMIN
      */
-    @PutMapping("/change/avatar/{id}")
-    public ResponseEntity<?> changeAvatar(@PathVariable("id") Long userId, MultipartFile avatar) {
-        return new ResponseEntity<>(new ApiResponse("Success", userService.changeAvatar(userId, avatar)),
+    @PostMapping("/change/avatar/{id}")
+    public ResponseEntity<?> changeAvatar(@PathVariable("id") Long userId,@RequestBody AvatarRequest url) {
+        return new ResponseEntity<>(new ApiResponse("Success", userService.changeAvatar(userId, url)),
                 HttpStatus.OK);
     }
 
@@ -150,25 +151,27 @@ public class UserController {
     }
 
 
-
     @GetMapping("get/love/{id}")
     public ResponseEntity<?> getAllLoveSongOfUser(@PathVariable Long id) {
         return new ResponseEntity<>(new ApiResponse("Success", userService.getLoveSongOfUser(id)),
                 HttpStatus.OK);
 
 
+    }
+
+    @GetMapping("/{userId}/is/love/{songId}")
+    public ResponseEntity<?> isLoveSong(@PathVariable Long userId, @PathVariable Long songId) {
+        ;
+        return new ResponseEntity<>(new ApiResponse("Success",userService.isLoveSong(userId, songId)),
+                HttpStatus.OK);
+
 
     }
 
     @PostMapping("/{userId}/love/{songId}")
     public ResponseEntity<?> loveSong(@PathVariable Long userId, @PathVariable Long songId) {
-        return new ResponseEntity<>(new ApiResponse("Success", userService.loveSong(userId,songId)),
-                HttpStatus.OK);
-    }
-
-    @PostMapping("/{userId}/unlove/{songId}")
-    public ResponseEntity<?> unloveSong(@PathVariable Long userId, @PathVariable Long songId) {
-        return new ResponseEntity<>(new ApiResponse("Success", userService.unloveSong(userId,songId)),
+        userService.loveSong(userId, songId);
+        return new ResponseEntity<>(new MessageResponse("Success" ),
                 HttpStatus.OK);
     }
 
