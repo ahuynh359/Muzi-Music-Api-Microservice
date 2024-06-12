@@ -11,6 +11,7 @@ import com.ahuynh.user_service.model.repository.RoleRepository;
 import com.ahuynh.user_service.model.repository.UserRepository;
 import com.ahuynh.user_service.model.rest.request.ChangeDeviceTokenRequest;
 import com.ahuynh.user_service.model.rest.request.ChangePasswordRequest;
+import com.ahuynh.user_service.model.rest.response.SongResponse;
 import com.ahuynh.user_service.model.rest.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final FirebaseService firebaseService;
     private final RoleRepository roleRepository;
+    private final FeignClientSong feignClientSong;
 
 
     public UserResponse createUser(String email, String password, String username, MultipartFile avatar, boolean enable) {
@@ -119,104 +121,33 @@ public class UserService {
     public List<UserResponse> getHotUser() {
         return UserResponse.toResponseList(userRepository.findHotUser());
     }
-    public List<UserEntity> findByUsernameContainingIgnoreCase(String keyword){
+
+    public List<UserEntity> findByUsernameContainingIgnoreCase(String keyword) {
         return userRepository.findByUsernameContainingIgnoreCase(keyword);
     }
-//    public UserDto getHotUsers() {
-//        return userMapper.convertToDtoList(userRepository.find)
-//    }
 
-//    @Transactional
-//    public void followUserEntity(Long followerId, Long followedId) {
-//        UserEntity follower = UserEntityRepository.findById(followerId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Follower not found"));
-//        UserEntity followed = UserEntityRepository.findById(followedId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Followed UserEntity not found"));
-//        follower.follow(followed);
-//        UserEntityRepository.save(follower);
-//    }
-//
-//    @Transactional
-//    public void unfollowUserEntity(Long followerId, Long followedId) {
-//        UserEntity follower = UserEntityRepository.findById(followerId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Follower not found"));
-//        UserEntity followed = UserEntityRepository.findById(followedId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Followed UserEntity not found"));
-//        follower.unfollow(followed);
-//        UserEntityRepository.save(follower);
-//    }
-//
-//    public List<UserEntity> getFollowing(Long UserEntityId) {
-//        UserEntity UserEntity = UserEntityRepository.findById(UserEntityId)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + UserEntityId));
-//        System.out.println(UserEntity.getFollowing());
-//        return UserEntityRepository.findFollowingById(UserEntityId);
-//    }
-//
-//    public List<UserEntity> getFollower(Long UserEntityId) {
-//        UserEntity UserEntity = UserEntityRepository.findById(UserEntityId)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + UserEntityId));
-//        return UserEntityRepository.findFollowerById(UserEntityId);
-//    }
-//
-//    public void loveSong(Long UserEntityId, Long songId) {
-//        UserEntity UserEntity = UserEntityRepository.findById(UserEntityId)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + UserEntityId));
-//        Song song = songRepository.findById(songId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Song not found " + songId));
-//        UserEntity.addLovedSong(song);
-//        UserEntityRepository.save(UserEntity);
-//    }
-//
-//    public void unloveSong(Long UserEntityId, Long songId) {
-//        UserEntity UserEntity = UserEntityRepository.findById(UserEntityId)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + UserEntityId));
-//        Song song = songRepository.findById(songId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Song not found " + songId));
-//        UserEntity.removeLovedSong(song);
-//        UserEntityRepository.save(UserEntity);
-//    }
-//
-//    public Set<Song> getLoveSong(Long id) {
-//        UserEntity UserEntity = UserEntityRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + id));
-//        return UserEntity.getLoveSongs();
-//
-//    }
-//
-//    public boolean isLoveSong(Long id, Long songId) {
-//        UserEntity UserEntity = UserEntityRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + id));
-//        Song song = songRepository.findById(songId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Song not found " + songId));
-//        return UserEntity.getLoveSongs().contains(song);
-//
-//    }
-//
-//    public UserEntity editAvatar(Long id, MultipartFile avatar) {
-//        UserEntity UserEntity = UserEntityRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + id));
-//        String url = firebaseService.upload(avatar, "image/png");
-//        UserEntity.setAvatar(url);
-//        return UserEntityRepository.save(UserEntity);
-//    }
-//
-//    public List<Playlist> getAllPlaylistById(Long id) {
-//        UserEntity UserEntity = UserEntityRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + id));
-//        return UserEntityRepository.findPlaylistById(id);
-//    }
-//
-//    public UserEntity getUserEntityByUserEntityName(String UserEntityname) {
-//        return UserEntityRepository.findByUserEntitynameOrEmail(UserEntityname, UserEntityname)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + UserEntityname));
-//    }
-//
-//
-//
-//    public UserEntity findByEmail(String email) {
-//
-//        return UserEntityRepository.findByEmail(email)
-//                .orElseThrow(() -> new ResourceNotFoundException("UserEntity not found " + email));
-//    }
+    public SongResponse getSong(Long id) {
+        return feignClientSong.getSongById(id);
+    }
+
+    public Set<SongResponse> getLoveSongOfUser(Long id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Not found " + id.toString()));
+        Set<Long> songIds = user.getLovedSongId();
+        return feignClientSong.getListSongById(songIds);
+    }
+
+    public UserEntity loveSong(Long userId, Long songId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(() ->
+                new EntityNotFoundException("Not found " + userId.toString()));
+        user.addLoveSong(songId);
+        return userRepository.save(user);
+    }
+
+    public UserEntity unloveSong(Long userId, Long songId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(() ->
+                new EntityNotFoundException("Not found " + userId.toString()));
+        user.removeLoveSong(songId);
+        return userRepository.save(user);
+    }
 }

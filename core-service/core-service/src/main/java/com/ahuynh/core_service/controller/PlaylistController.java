@@ -1,5 +1,6 @@
 package com.ahuynh.core_service.controller;
 
+import com.ahuynh.core_service.model.entity.PlaylistEntity;
 import com.ahuynh.core_service.model.rest.request.PlaylistRequest;
 import com.ahuynh.core_service.model.rest.response.ApiResponse;
 import com.ahuynh.core_service.model.rest.response.MessageResponse;
@@ -35,42 +36,33 @@ public class PlaylistController {
     }
 
 
-
-
     @DeleteMapping("{id}")
     public ResponseEntity<?> deletePlaylist(@PathVariable(name = "id") Long id) {
         playlistService.deletePlaylist(id);
         return new ResponseEntity<>(new MessageResponse("Delete  Successfully"), HttpStatus.OK);
     }
 
-    //
-//    @PutMapping("/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> updatePlaylist(@PathVariable(name = "id") Long id, @RequestBody PlaylistRequest playlistRequest) {
-//        Playlist playlist = playlistService.updatePlaylist(id, playlistRequest);
-//        return new ResponseEntity<>(new ApiResponse(true, "Update  Successfully", objectMapper.convertValue(playlist, PlaylistResponse.class)), HttpStatus.OK);
-//    }
-//
-//
-//    @PostMapping("/add-song/{songId}/{playlistId}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> addSongToPlaylist(@PathVariable(name = "songId") Long songId, @PathVariable(name = "playlistId") Long playlistId) {
-//
-//        playlistService.addSongToPlaylist(songId, playlistId);
-//        return new ResponseEntity<>(new ApiResponse(true, "  Successfully",
-//                ""), HttpStatus.CREATED);
-//    }
-//
-//    @PostMapping("/remove-song/{songId}/{playlistId}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> removeSongFromPlaylist(@PathVariable(name = "songId") Long songId, @PathVariable(name = "playlistId") Long playlistId) {
-//
-//        playlistService.deleteSongFromPlaylist(songId, playlistId);
-//        return new ResponseEntity<>(new ApiResponse(true, "  Successfully",
-//                ""), HttpStatus.CREATED);
-//    }
-//
-//
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePlaylist(@PathVariable(name = "id") Long id, @RequestBody PlaylistRequest playlistRequest) {
+        PlaylistEntity playlist = playlistService.updatePlaylist(id, playlistRequest);
+        return new ResponseEntity<>(new ApiResponse( "Update  Successfully", PlaylistResponse.toResponse(playlist)), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/{playlistId}/add/{songId}")
+    public ResponseEntity<?> addSongToPlaylist(@PathVariable(name = "playlistId") Long playlistId,@PathVariable(name = "songId") Long songId) {
+        playlistService.addSongToPlaylist(playlistId, songId);
+        return new ResponseEntity<>(new MessageResponse("Success"), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{playlistId}/remove/{songId}")
+    public ResponseEntity<?> removeSongToPlaylist(@PathVariable(name = "playlistId") Long playlistId,@PathVariable(name = "songId") Long songId) {
+        playlistService.removeSongFromPlaylist(playlistId, songId);
+        return new ResponseEntity<>(new MessageResponse("Success"), HttpStatus.CREATED);
+    }
+
+
     @GetMapping("/{id}/get/song")
     public ResponseEntity<?> getAllSongFromPlaylist(@PathVariable(name = "id") Long id) {
         return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponseList(playlistService.getAllSongFromPlaylist(id))), HttpStatus.OK);

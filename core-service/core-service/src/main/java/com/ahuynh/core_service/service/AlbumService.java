@@ -80,6 +80,10 @@ public class AlbumService {
 
         return AlbumResponse.toResponse(albumRepository.save(album));
     }
+
+    public void deleteAlbum(Long id) {
+        albumRepository.deleteById(id);
+    }
 //
 //    public Album getAlbumByName(String name) {
 //        return albumRepository.findByName(name).orElseThrow(() ->

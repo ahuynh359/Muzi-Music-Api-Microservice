@@ -21,7 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserEntity  {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,6 +67,11 @@ public class UserEntity  {
     @ManyToMany(mappedBy = "following")
     private Set<UserEntity> followers = new HashSet<>();
 
+    @JsonIgnore
+    @ElementCollection
+    @CollectionTable(name = "love_song", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "love_song_id")
+    private Set<Long> lovedSongId;
 
 
     public UserEntity(String email, String password, String username, Set<RoleEntity> roles, String avatar, boolean enable) {
@@ -82,6 +87,13 @@ public class UserEntity  {
         this.role.add(role);
     }
 
+    public void addLoveSong(Long songId) {
+        this.lovedSongId.add(songId);
+    }
+
+    public void removeLoveSong(Long songId) {
+        this.lovedSongId.remove(songId);
+    }
 }
 
 

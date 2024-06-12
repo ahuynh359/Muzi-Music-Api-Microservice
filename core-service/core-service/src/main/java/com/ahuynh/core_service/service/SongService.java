@@ -92,4 +92,8 @@ public class SongService {
 
         return songRepository.findTop3ByOrderByListenDesc();
     }
+
+    public List<SongEntity> getListSongById(List<Long> id) {
+        return songRepository.findAllById(id);
+    }
 }

@@ -44,4 +44,11 @@ public class PlaylistEntity {
     }
 
 
+    public void addSong(SongEntity song) {
+        this.songs.add(song);
+    }
+
+    public void removeSong(SongEntity song) {
+        this.songs.remove(song);
+    }
 }

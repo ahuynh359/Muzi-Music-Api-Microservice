@@ -6,6 +6,7 @@ import com.ahuynh.core_service.model.rest.request.UpdateAlbumRequest;
 import com.ahuynh.core_service.model.rest.request.UpdateSongRequest;
 import com.ahuynh.core_service.model.rest.response.AlbumResponse;
 import com.ahuynh.core_service.model.rest.response.ApiResponse;
+import com.ahuynh.core_service.model.rest.response.MessageResponse;
 import com.ahuynh.core_service.model.rest.response.SongResponse;
 import com.ahuynh.core_service.service.AlbumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,18 +41,6 @@ public class AlbumController {
                 (new ApiResponse("Create Successfully",
                         albumService.createAlbum(avatar, name)), HttpStatus.CREATED);
     }
-//
-//    /**
-//     * Lấy album theo id
-//     * ADMIN - USER
-//     *AlbumResponse
-//     */
-//    @GetMapping("/get-by-id/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getAlbumById(@PathVariable Long id) {
-//        Album album = albumService.getAlbumById(id);
-//        return new ResponseEntity<>(objectMapper.convertValue(album, AlbumResponse.class), HttpStatus.OK);
-//    }
 
     /**
      * Lấy hết album
@@ -64,19 +53,7 @@ public class AlbumController {
         List<AlbumResponse> responses = AlbumResponse.toResponseList(album);
         return new ResponseEntity<>(new ApiResponse("Successfully", responses), HttpStatus.OK);
     }
-//
-//    /**
-//     * Lấy album theo name
-//     * ADMIN - USER
-//     *AlbumResponse
-//     */
-//    @GetMapping("/get-by-name")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getAlbumByName(@RequestParam String name) {
-//        Album album = albumService.getAlbumByName(name);
-//        return new ResponseEntity<>(objectMapper.convertValue(album, AlbumResponse.class), HttpStatus.OK);
-//    }
-//
+
 
     /**
      * Lấy song từ album theo id
@@ -91,58 +68,27 @@ public class AlbumController {
                 responses), HttpStatus.OK);
     }
 
-//    /**
-//     * Delete Alum
-//     * ADMIN
-//     *
-//     */
-//    @DeleteMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> deleteAlbum(@PathVariable(name = "id") Long id) {
-//        albumService.deleteAlbum(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Delete Successfully", ""), HttpStatus.OK);
-//    }
-//
-//
+    /**
+     * Delete Alum
+     * ADMIN
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteAlbum(@PathVariable(name = "id") Long id) {
+        albumService.deleteAlbum(id);
+        return new ResponseEntity<>(new MessageResponse("Delete Successfully"), HttpStatus.OK);
+    }
+
 
     /**
      * Update Alum
      * ADMIN
      */
-    @PutMapping("change/")
+    @PutMapping("/change")
     public ResponseEntity<?> updateAlbum(@RequestBody UpdateAlbumRequest request) {
         return new ResponseEntity<>(new ApiResponse("Update Successfully",
                 albumService.updateAlbum(request)), HttpStatus.OK);
     }
 
-//    /**
-//     * Thêm song to album
-//     * ADMIN
-//     *
-//     */
-//    @PostMapping("/add-song-to-album")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> addSongToAlbum(@RequestParam("songId") Long songId,
-//                                            @RequestParam("albumId") Long albumId
-//    ) {
-//        albumService.addSongToAlbum(songId, albumId);
-//        return new ResponseEntity<>(new ApiResponse(true,
-//                "Add Successfully", ""), HttpStatus.OK);
-//    }
-//    /**
-//     * Delete song from album
-//     * ADMIN
-//     *
-//     */
-//    @PostMapping("/delete-song-from-album")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> deleteSongFromAlbum(@RequestParam("songId") Long songId,
-//                                                 @RequestParam("albumId") Long albumId
-//    ) {
-//        albumService.deleteSongFromAlbum(songId, albumId);
-//        return new ResponseEntity<>(new ApiResponse(true,
-//                "Add Successfully", ""), HttpStatus.OK);
-//    }
 
 
 }

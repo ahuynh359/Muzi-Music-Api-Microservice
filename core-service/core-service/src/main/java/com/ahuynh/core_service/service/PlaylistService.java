@@ -10,6 +10,7 @@ import com.ahuynh.core_service.model.rest.request.PlaylistRequest;
 import com.ahuynh.core_service.model.rest.response.PlaylistResponse;
 import com.ahuynh.core_service.model.rest.response.UserResponse;
 import com.ahuynh.core_service.repository.PlaylistRepository;
+import com.ahuynh.core_service.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final FeignClientUser feignClientUser;
+    private final SongRepository songRepository;
 
 
     public PlaylistEntity createPlaylist(PlaylistRequest request) {
@@ -38,19 +40,19 @@ public class PlaylistService {
         playlistRepository.deleteById(id);
     }
 
-    public PlaylistResponse updatePlaylist(Long id, PlaylistRequest newPlaylist) {
+    public PlaylistEntity updatePlaylist(Long id, PlaylistRequest request) {
         PlaylistEntity updatedPlaylist = playlistRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Playlist not exits id =" + id));
-        if (playlistRepository.existsByName(newPlaylist.getName())) {
-            throw new InvalidException("Playlist with name " + newPlaylist.getName() + " already exists", ErrorCode.ERROR);
+        if (playlistRepository.existsByName(request.getName()) && playlistRepository.existsByUserId(request.getUserId())) {
+            throw new InvalidException("Playlist with name " + request.getName() + " already exists", ErrorCode.ERROR);
         }
 
-        if (newPlaylist.getName() != null) {
-            updatedPlaylist.setName(newPlaylist.getName());
+        if (request.getName() != null) {
+            updatedPlaylist.setName(request.getName());
         }
 
 
-        return PlaylistResponse.toResponse(playlistRepository.save(updatedPlaylist));
+        return playlistRepository.save(updatedPlaylist);
     }
 
 
@@ -102,4 +104,21 @@ public class PlaylistService {
     }
 
 
+    public PlaylistEntity addSongToPlaylist(Long playlistId, Long songId) {
+        PlaylistEntity updatedPlaylist = playlistRepository.findById(playlistId).orElseThrow(() ->
+                new EntityNotFoundException("Playlist not exits id = " + playlistId));
+        SongEntity song = songRepository.findById(songId).orElseThrow(() ->
+                new EntityNotFoundException("Song not exits id = " + songId));
+        updatedPlaylist.addSong(song);
+        return playlistRepository.save(updatedPlaylist);
+    }
+
+    public PlaylistEntity removeSongFromPlaylist(Long playlistId, Long songId) {
+        PlaylistEntity updatedPlaylist = playlistRepository.findById(playlistId).orElseThrow(() ->
+                new EntityNotFoundException("Playlist not exits id = " + playlistId));
+        SongEntity song = songRepository.findById(songId).orElseThrow(() ->
+                new EntityNotFoundException("Song not exits id = " + songId));
+        updatedPlaylist.removeSong(song);
+        return playlistRepository.save(updatedPlaylist);
+    }
 }

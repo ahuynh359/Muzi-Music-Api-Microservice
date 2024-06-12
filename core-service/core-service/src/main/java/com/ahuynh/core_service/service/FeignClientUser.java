@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(value = "muzi-music-client",
+@FeignClient(value = "muzi-music-user",
         configuration = CustomFeignClientConfiguration.class,url = "http://localhost:8765/user-service")
 public interface FeignClientUser {
 

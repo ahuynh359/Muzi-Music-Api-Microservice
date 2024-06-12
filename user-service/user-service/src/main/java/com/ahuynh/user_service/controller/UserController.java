@@ -4,6 +4,7 @@ import com.ahuynh.user_service.model.rest.request.ChangeDeviceTokenRequest;
 import com.ahuynh.user_service.model.rest.request.ChangePasswordRequest;
 import com.ahuynh.user_service.model.rest.response.ApiResponse;
 import com.ahuynh.user_service.model.rest.response.MessageResponse;
+import com.ahuynh.user_service.model.rest.response.SongResponse;
 import com.ahuynh.user_service.model.rest.response.UserResponse;
 import com.ahuynh.user_service.service.UserService;
 import jakarta.validation.Valid;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -144,6 +147,29 @@ public class UserController {
     public ResponseEntity<?> searchUser(@PathVariable String keyword) {
         return ResponseEntity.ok(UserResponse.toResponseList(userService.findByUsernameContainingIgnoreCase(keyword)));
 
+    }
+
+
+
+    @GetMapping("get/love/{id}")
+    public ResponseEntity<?> getAllLoveSongOfUser(@PathVariable Long id) {
+        return new ResponseEntity<>(new ApiResponse("Success", userService.getLoveSongOfUser(id)),
+                HttpStatus.OK);
+
+
+
+    }
+
+    @PostMapping("/{userId}/love/{songId}")
+    public ResponseEntity<?> loveSong(@PathVariable Long userId, @PathVariable Long songId) {
+        return new ResponseEntity<>(new ApiResponse("Success", userService.loveSong(userId,songId)),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}/unlove/{songId}")
+    public ResponseEntity<?> unloveSong(@PathVariable Long userId, @PathVariable Long songId) {
+        return new ResponseEntity<>(new ApiResponse("Success", userService.unloveSong(userId,songId)),
+                HttpStatus.OK);
     }
 
 

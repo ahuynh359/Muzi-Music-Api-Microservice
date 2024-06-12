@@ -47,8 +47,20 @@ public class SongController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> getSongById(@PathVariable(name = "id") Long id) {
-        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponse(songService.getSongById(id))), HttpStatus.OK);
+        return ResponseEntity.ok(SongResponse.toResponse(songService.getSongById(id)));
     }
+
+    /**
+     * Lấy song by id
+     * USER - ADMIN
+     * SongResponse
+     */
+
+    @GetMapping("/list")
+    public ResponseEntity<?> getListSongById(@RequestParam(name = "id") List<Long> id) {
+        return ResponseEntity.ok(SongResponse.toResponseList(songService.getListSongById(id)));
+    }
+
 
     /**
      * Lấy het song
@@ -66,7 +78,6 @@ public class SongController {
      * USER - ADMIN
      * ListSongResponse
      */
-
 
 
     @GetMapping("/top-3")
