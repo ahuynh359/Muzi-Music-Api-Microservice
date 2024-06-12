@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity getByUsernameOrEmail(String userNameOrEmail, String userNameOrEmail1);
 
     Optional<UserEntity> findByEmail(String email);
-
+    List<UserEntity> findByUsernameContainingIgnoreCase(String username);
     @Query("SELECT u FROM UserEntity u ORDER BY SIZE(u.followers) DESC LIMIT 10")
     List<UserEntity> findHotUser();
 }

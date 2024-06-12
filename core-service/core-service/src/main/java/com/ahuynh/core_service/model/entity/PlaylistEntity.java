@@ -22,8 +22,10 @@ public class PlaylistEntity {
 
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
+
+    private String avatar = "https://firebasestorage.googleapis.com/v0/b/muzimusic-c2598.appspot.com/o/app%2Fplaylist.png?alt=media&token=aa0448ad-b60d-4f76-b7b5-a83162dd7a10";
 
 
     @Column(name = "user_id", nullable = false)

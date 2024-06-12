@@ -119,7 +119,9 @@ public class UserService {
     public List<UserResponse> getHotUser() {
         return UserResponse.toResponseList(userRepository.findHotUser());
     }
-
+    public List<UserEntity> findByUsernameContainingIgnoreCase(String keyword){
+        return userRepository.findByUsernameContainingIgnoreCase(keyword);
+    }
 //    public UserDto getHotUsers() {
 //        return userMapper.convertToDtoList(userRepository.find)
 //    }

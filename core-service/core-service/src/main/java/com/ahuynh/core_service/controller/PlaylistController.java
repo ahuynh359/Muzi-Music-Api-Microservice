@@ -1,64 +1,49 @@
 package com.ahuynh.core_service.controller;
 
+import com.ahuynh.core_service.model.rest.request.PlaylistRequest;
+import com.ahuynh.core_service.model.rest.response.ApiResponse;
+import com.ahuynh.core_service.model.rest.response.MessageResponse;
+import com.ahuynh.core_service.model.rest.response.PlaylistResponse;
+import com.ahuynh.core_service.model.rest.response.SongResponse;
 import com.ahuynh.core_service.service.FeignClientUser;
 import com.ahuynh.core_service.service.PlaylistService;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.bridge.Message;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/playlist")
 @RequiredArgsConstructor
 public class PlaylistController {
+    private final PlaylistService playlistService;
 
-    //private final PlaylistService playlistService;
-    private final FeignClientUser feignClientUser;
-
-    @GetMapping()
-    public ResponseEntity<?> addPlaylist() {
-
-      return ResponseEntity.ok(feignClientUser.getUser());
+    @GetMapping("/all/{id}")
+    public ResponseEntity<?> getAllPlaylistByUserId(@PathVariable Long id) {
+        return new ResponseEntity<>(new ApiResponse("Successfully", PlaylistResponse.toResponseList(
+                playlistService.getAllPlaylist(id))), HttpStatus.OK);
     }
-//
-//    @GetMapping("")
-//    public String abc(){
-//        return feignClientUser.test();
-//    }
 
-//    @GetMapping("/get-by-id/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getPlaylistById(@PathVariable(name = "id") Long id) {
-//        Playlist playlist = playlistService.getPlaylistById(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", objectMapper.convertValue(playlist, PlaylistResponse.class)), HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/get-by-name")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getPlaylistByNameAndUser(@RequestParam(name = "name") String name, @RequestParam(name = "userId") Long userId) {
-//        Playlist playlist = playlistService.getPlaylistByNameAndUser(name, userId);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", objectMapper.convertValue(playlist, PlaylistResponse.class)), HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/get-all/{userId}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getAllPlaylistByUser(@PathVariable(name = "userId") Long userId) {
-//        List<Playlist> playlist = playlistService.getAllPlaylistByUser(userId);
-//        List<PlaylistResponse> responses = PlaylistResponse.toResponseList(playlist);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", responses), HttpStatus.OK);
-//    }
-//
-//
-//    //Ko xoa dươc why ?
-//    @DeleteMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> deletePlaylistById(@PathVariable(name = "id") Long id) {
-//        playlistService.deletePlaylist(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Delete  Successfully", ""), HttpStatus.OK);
-//    }
-//
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createPlaylist(@RequestBody PlaylistRequest playlistRequest) {
+        return new ResponseEntity<>(new ApiResponse("Successfully",
+                PlaylistResponse.toResponse(playlistService.createPlaylist(playlistRequest))), HttpStatus.OK);
+
+
+    }
+
+
+
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deletePlaylist(@PathVariable(name = "id") Long id) {
+        playlistService.deletePlaylist(id);
+        return new ResponseEntity<>(new MessageResponse("Delete  Successfully"), HttpStatus.OK);
+    }
+
+    //
 //    @PutMapping("/{id}")
 //    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 //    public ResponseEntity<?> updatePlaylist(@PathVariable(name = "id") Long id, @RequestBody PlaylistRequest playlistRequest) {
@@ -86,13 +71,10 @@ public class PlaylistController {
 //    }
 //
 //
-//    @GetMapping("/get-all-song/{playlistId}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getAllSongFromPlaylist(@PathVariable(name = "playlistId") Long playlistId) {
-//        List<Song> song = playlistService.getAllSongFromPlaylist(playlistId);
-//        List<SongResponse> responses = SongResponse.toResponseList(song);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", responses), HttpStatus.OK);
-//    }
+    @GetMapping("/{id}/get/song")
+    public ResponseEntity<?> getAllSongFromPlaylist(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponseList(playlistService.getAllSongFromPlaylist(id))), HttpStatus.OK);
+    }
 
 
 }

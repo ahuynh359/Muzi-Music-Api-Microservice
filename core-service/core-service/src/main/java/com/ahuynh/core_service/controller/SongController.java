@@ -1,7 +1,9 @@
 package com.ahuynh.core_service.controller;
 
 import com.ahuynh.core_service.model.entity.SongEntity;
+import com.ahuynh.core_service.model.rest.request.UpdateSongRequest;
 import com.ahuynh.core_service.model.rest.response.ApiResponse;
+import com.ahuynh.core_service.model.rest.response.MessageResponse;
 import com.ahuynh.core_service.model.rest.response.SongResponse;
 import com.ahuynh.core_service.service.SongService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class SongController {
     private final SongService songService;
 
     /**
-     * Thêm bài hát
+     * Thêm bài hát- chua co type
      * ADMIN
      * SongResponse
      */
@@ -34,53 +36,87 @@ public class SongController {
                                         @RequestParam("singer") String singer) {
 
         return new ResponseEntity<>(new ApiResponse("Create Successfully",
-                songService.createSong(name, avatar, file, lyrics, albumId, singer)), HttpStatus.CREATED);
+                SongResponse.toResponse(songService.createSong(name, avatar, file, lyrics, albumId, singer))), HttpStatus.CREATED);
     }
 
     /**
      * Lấy song by id
      * USER - ADMIN
+     * SongResponse
      */
 
-    @GetMapping("{id}/songs")
+    @GetMapping("{id}")
     public ResponseEntity<?> getSongById(@PathVariable(name = "id") Long id) {
-        return new ResponseEntity<>(new ApiResponse("Successfully", songService.getSongById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponse(songService.getSongById(id))), HttpStatus.OK);
     }
 
     /**
      * Lấy het song
      * USER - ADMIN
+     * ListSongResponse
      */
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllSong() {
-        return new ResponseEntity<>(new ApiResponse("Successfully", songService.getAllSong()), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponseList(songService.getAllSong())), HttpStatus.OK);
+    }
+
+    /**
+     * Lấy newest song
+     * USER - ADMIN
+     * ListSongResponse
+     */
+
+
+
+    @GetMapping("/top-3")
+    public ResponseEntity<?> getTop3Song() {
+        return new ResponseEntity<>(new ApiResponse("Successfully", SongResponse.toResponseList(songService.getTop3Song())), HttpStatus.OK);
     }
 
 
-//    @GetMapping("/get-type/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> getTypeOfSong(@PathVariable(name = "id") Long id) {
-//        List<Type> type = songService.getTypeOfSong(id);
-//        List<TypeResponse> responses = TypeResponse.toResponseList(type);
-//        return new ResponseEntity<>(new ApiResponse(true, "Successfully", responses), HttpStatus.OK);
-//    }
-//
-//
-//    @DeleteMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> deleteSong(@PathVariable(name = "id") Long id) {
-//        songService.deleteSong(id);
-//        return new ResponseEntity<>(new ApiResponse(true, "Delete song Successfully", ""), HttpStatus.OK);
-//    }
-//
-//    @PutMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public ResponseEntity<?> updateSong(@PathVariable(name = "id") Long id, @RequestBody UpdateSongRequest newSong) {
-//        Song song = songService.updateSong(id, newSong);
-//        return new ResponseEntity<>(new ApiResponse(true, "Update song Successfully",
-//                objectMapper.convertValue(song, SongResponse.class)), HttpStatus.OK);
-//    }
+    /**
+     * delete song
+     * ADMIN
+     * Message
+     */
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteSong(@PathVariable(name = "id") Long id) {
+        songService.deleteSong(id);
+        return new ResponseEntity<>(new MessageResponse("Delete song Successfully"), HttpStatus.OK);
+    }
 
+    /**
+     * update song
+     * ADMIN
+     * Song Response
+     */
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateSong(@PathVariable(name = "id") Long id, @RequestBody UpdateSongRequest request) {
+        return new ResponseEntity<>(new ApiResponse("Update song Successfully",
+                SongResponse.toResponse(songService.updateSong(id, request))), HttpStatus.OK);
+    }
+
+    /**
+     * update listen
+     * ADMIN
+     * Song Response
+     */
+    @PutMapping("/listen/{id}")
+    public ResponseEntity<?> updateListenSong(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(new ApiResponse("Update song Successfully",
+                SongResponse.toResponse(songService.updateListenSong(id))), HttpStatus.OK);
+    }
+
+    /**
+     * Search song, account , album
+     * USER - ADMIN
+     * ListSongResponse
+     */
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String str) {
+        return new ResponseEntity<>(new ApiResponse("Successfully", songService.search(str)), HttpStatus.OK);
+    }
 }

@@ -11,7 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -64,6 +66,8 @@ public class UserEntity  {
     @JsonIgnore
     @ManyToMany(mappedBy = "following")
     private Set<UserEntity> followers = new HashSet<>();
+
+
 
     public UserEntity(String email, String password, String username, Set<RoleEntity> roles, String avatar, boolean enable) {
         this.email = email;

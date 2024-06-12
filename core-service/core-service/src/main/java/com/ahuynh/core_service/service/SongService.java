@@ -4,6 +4,8 @@ import com.ahuynh.core_service.exception.EntityNotFoundException;
 import com.ahuynh.core_service.model.entity.AlbumEntity;
 import com.ahuynh.core_service.model.entity.SongEntity;
 import com.ahuynh.core_service.model.rest.request.UpdateSongRequest;
+import com.ahuynh.core_service.model.rest.response.AlbumResponse;
+import com.ahuynh.core_service.model.rest.response.SearchResponse;
 import com.ahuynh.core_service.model.rest.response.SongResponse;
 import com.ahuynh.core_service.repository.AlbumRepository;
 import com.ahuynh.core_service.repository.SongRepository;
@@ -20,14 +22,13 @@ public class SongService {
     private final SongRepository songRepository;
     private final AlbumRepository albumRepository;
     private final FirebaseService firebaseService;
+    private final FeignClientUser feignClientUser;
 
-    public SongResponse createSong(String name, MultipartFile avatar, MultipartFile file, String lyrics, Long albumIb, String singer) {
+    public SongEntity createSong(String name, MultipartFile avatar, MultipartFile file, String lyrics, Long albumIb, String singer) {
         AlbumEntity album = albumRepository.findById(albumIb).orElseThrow(() -> new EntityNotFoundException("No Album with " + albumIb));
         String urlAvatar = firebaseService.upload(avatar, "image/png");
         String urlFile = firebaseService.upload(file, "audio/mpeg");
-        SongEntity s = new SongEntity(name, urlAvatar, urlFile, lyrics, album, singer);
-
-        return SongResponse.toResponse(songRepository.save(s));
+        return songRepository.save(new SongEntity(name, urlAvatar, urlFile, lyrics, album, singer));
     }
 
     public SongEntity getSongById(Long id) {
@@ -65,9 +66,30 @@ public class SongService {
         return songRepository.save(song);
     }
 
-    public List<SongResponse> getAllSong() {
-        return SongResponse.toResponseList(songRepository.findAll());
+    public List<SongEntity> getAllSong() {
+        return songRepository.findAll();
     }
 
 
+    public SongEntity updateListenSong(Long id) {
+        SongEntity song = songRepository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException("SongEntity not exits id =" + id));
+        song.setListen(song.getListen() + 1);
+        return songRepository.save(song);
+    }
+
+    public SearchResponse search(String keyword) {
+        SearchResponse searchResponse = new SearchResponse();
+        searchResponse.setUsers(feignClientUser.searchUser(keyword));
+        searchResponse.setAlbums(AlbumResponse.toResponseList(albumRepository.findByNameContainingIgnoreCase(keyword)));
+        searchResponse.setSongs(SongResponse.toResponseList(songRepository.findByNameContainingIgnoreCase(keyword)));
+        return searchResponse;
+    }
+
+
+
+    public List<SongEntity> getTop3Song() {
+
+        return songRepository.findTop3ByOrderByListenDesc();
+    }
 }

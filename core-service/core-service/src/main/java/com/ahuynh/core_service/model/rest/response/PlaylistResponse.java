@@ -15,11 +15,13 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
+
 public class PlaylistResponse {
     private Long id;
     private String name;
     private Long userId;
-    private List<SongResponse> songs = new ArrayList<>();
+    private String avatar;
+
 
 
     public static List<PlaylistResponse> toResponseList(List<PlaylistEntity> playlists) {
@@ -34,12 +36,9 @@ public class PlaylistResponse {
         PlaylistResponse response = new PlaylistResponse();
         response.setId(playlist.getId());
         response.setName(playlist.getName());
+        response.setAvatar(playlist.getAvatar());
         response.setUserId(playlist.getUserId());
-        List<SongResponse> songResponses = new ArrayList<>();
-        for (SongEntity song : playlist.getSongs()) {
-            songResponses.add(SongResponse.toResponse(song));
-        }
-        response.setSongs(songResponses);
+
         return response;
     }
 }

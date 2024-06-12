@@ -22,9 +22,9 @@ public class SongResponse {
     private String avatar;
     private String file;
     private String lyrics;
-    private String album;
     private Long listen;
     private String singer;
+    private AlbumResponse album;
     private List<String> types = new ArrayList<>();
 
     public static SongResponse toResponse(SongEntity song) {
@@ -34,10 +34,10 @@ public class SongResponse {
         response.avatar = song.getAvatar();
         response.file = song.getFile();
         response.lyrics = song.getLyrics();
-        response.album = song.getAlbum().getName();
+        response.album = AlbumResponse.toResponse(song.getAlbum());
         response.listen = song.getListen();
         response.singer = song.getSinger();
-        response.types = song.getTypes() // Assuming this returns a List<RoleEntity>
+        response.types = song.getTypes()
                 .stream()
                 .map(TypeEntity::getName)
                 .collect(Collectors.toList());

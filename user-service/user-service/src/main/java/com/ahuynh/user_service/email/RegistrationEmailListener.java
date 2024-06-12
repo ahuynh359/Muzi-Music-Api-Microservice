@@ -32,7 +32,7 @@ public class RegistrationEmailListener implements
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
         String confirmationUrl
-                = event.getAppUrl() + "/auth/verify/" + token;
+                =  "http://localhost:8765/user-service/auth/verify/" + token;
         String message = "Hi ," + user.getUsername() + " please verify opt";
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);

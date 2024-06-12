@@ -15,4 +15,6 @@ public interface AlbumRepository extends JpaRepository<AlbumEntity,Long> {
     List<SongEntity> findSongById(Long id);
 
     boolean existsByName(String name);
+
+    List<AlbumEntity> findByNameContainingIgnoreCase(String name);
 }

@@ -135,6 +135,17 @@ public class UserController {
                 HttpStatus.OK);
     }
 
+    /**
+     * Lấy ds tài khoản nổi bật
+     * ADMIN - USER
+     * List<UserDto>
+     */
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> searchUser(@PathVariable String keyword) {
+        return ResponseEntity.ok(UserResponse.toResponseList(userService.findByUsernameContainingIgnoreCase(keyword)));
+
+    }
+
 
 }
 

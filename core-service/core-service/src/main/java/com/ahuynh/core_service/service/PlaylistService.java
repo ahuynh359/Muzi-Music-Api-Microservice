@@ -5,6 +5,7 @@ import com.ahuynh.core_service.exception.EntityNotFoundException;
 import com.ahuynh.core_service.exception.ErrorCode;
 import com.ahuynh.core_service.exception.InvalidException;
 import com.ahuynh.core_service.model.entity.PlaylistEntity;
+import com.ahuynh.core_service.model.entity.SongEntity;
 import com.ahuynh.core_service.model.rest.request.PlaylistRequest;
 import com.ahuynh.core_service.model.rest.response.PlaylistResponse;
 import com.ahuynh.core_service.model.rest.response.UserResponse;
@@ -12,33 +13,29 @@ import com.ahuynh.core_service.repository.PlaylistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final FeignClientUser feignClientUser;
 
-    public String abc() {
-        return feignClientUser.test();
-    }
 
-
-    public PlaylistResponse addPlaylist(PlaylistRequest request) {
-        UserResponse user = feignClientUser.getUser();
+    public PlaylistEntity createPlaylist(PlaylistRequest request) {
+        UserResponse user = feignClientUser.getUser(request.getUserId());
         if (playlistRepository.existsByName(request.getName())
                 && playlistRepository.existsByUserId(request.getUserId())) {
             throw new InvalidException("Playlist with name " + request.getName() + " already exists with user id " + request.getUserId(), ErrorCode.ERROR);
         }
 
+        PlaylistEntity playlist = new PlaylistEntity(request.getName(), request.getUserId());
 
-        PlaylistEntity playlist = new PlaylistEntity(request.getName(), user.getId());
-
-        return PlaylistResponse.toResponse(playlistRepository.save(playlist));
+        return playlistRepository.save(playlist);
     }
 
     public void deletePlaylist(Long id) {
-        PlaylistEntity playlist = playlistRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Playlist not exits id =" + id));
-        playlistRepository.delete(playlist);
+        playlistRepository.deleteById(id);
     }
 
     public PlaylistResponse updatePlaylist(Long id, PlaylistRequest newPlaylist) {
@@ -57,11 +54,11 @@ public class PlaylistService {
     }
 
 
-//
-//    public List<Playlist> getAllPlaylistByUser(Long userId) {
-//        return playlistRepository.findAllByUserId(userId);
-//    }
-//
+    public List<PlaylistEntity> getAllPlaylist(Long id) {
+        return playlistRepository.findAllByUserId(id);
+    }
+
+    //
 //
 //    public Playlist getPlaylistByNameAndUser(String name,Long userId) {
 //        return playlistRepository.findByNameAndUserId(name,userId).orElseThrow(() ->
@@ -97,10 +94,12 @@ public class PlaylistService {
 //        songRepository.save(updateSong);
 //    }
 //
-//    public List<Song> getAllSongFromPlaylist(Long playlistId) {
-//        Playlist updatedPlaylist = playlistRepository.findById(playlistId).orElseThrow(() ->
-//                new ResourceNotFoundException("Playlist not exits id = " + playlistId));
-//
-//        return updatedPlaylist.getSongs();
-//    }
+    public List<SongEntity> getAllSongFromPlaylist(Long playlistId) {
+        PlaylistEntity updatedPlaylist = playlistRepository.findById(playlistId).orElseThrow(() ->
+                new EntityNotFoundException("Playlist not exits id = " + playlistId));
+
+        return updatedPlaylist.getSongs();
+    }
+
+
 }
