@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  registry-server:
+    build:
+      context: ./registry-service
+      dockerfile: Dockerfile
+    container_name: registry-server
+    ports:
+      - "8761:8761"
+    networks:
+      - registry-network
+
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8765:8765"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registry-server:8761/eureka
+    depends_on:
+      - registry-server
+    networks:
+      - registry-network
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8100:8100"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registry-server:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/muzi-music-user
+    depends_on:
+      - registry-server
+      - api-gateway
+    networks:
+      - registry-network
+  core-service:
+    build:
+      context: ./core-service
+      dockerfile: Dockerfile
+    container_name: core-service
+    ports:
+      - "8200:8200"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registry-server:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/muzi-music-core
+    depends_on:
+      - registry-server
+      - api-gateway
+    networks:
+      - registry-network
+
+networks:
+  registry-network:
+    driver: bridge
+
