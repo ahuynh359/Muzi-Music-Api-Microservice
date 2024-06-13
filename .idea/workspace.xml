@@ -5,165 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf4f0948-9507-4589-9830-fc561066f9a9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/core-service/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/.idea/api-gateway.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/src/main/java/com/ahuynh/api_gateway/ApiGatewayApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/api-gateway/src/test/java/com/ahuynh/api_gateway/ApiGatewayApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/.idea/core-service.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/CoreServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/configuration/CustomFeignClientConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/controller/AlbumController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/controller/PlaylistController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/controller/SongController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/controller/TypeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/BaseException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/EntityNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/ErrorCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/ErrorResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/InvalidException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/InvalidTokenException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/PasswordIsIncorrectException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/UserAlreadyRegisteredException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/exception/UserIsNotVerifiedException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/entity/AlbumEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/entity/PlaylistEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/entity/SongEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/entity/TypeEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/request/PlaylistRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/request/TypeRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/request/UpdateAlbumRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/request/UpdateSongRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/AlbumResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/ApiResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/MessageResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/PlaylistResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/SearchResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/SongResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/TypeResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/model/rest/response/UserResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/repository/AlbumRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/repository/PlaylistRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/repository/SongRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/repository/TypeRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/service/AlbumService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/service/FeignClientUser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/service/FirebaseService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/service/PlaylistService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/service/SongService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/java/com/ahuynh/core_service/service/TypeService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/main/resources/firebase.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/core-service/src/test/java/com/ahuynh/core_service/CoreServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/NotificationServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/controller/NotificationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/BaseException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/EntityNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/ErrorCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/ErrorResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/InvalidException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/InvalidTokenException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/PasswordIsIncorrectException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/UserAlreadyRegisteredException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/exception/UserIsNotVerifiedException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/model/ApiResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/model/MessageResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/model/NotificationEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/model/NotificationRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/model/NotificationResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/repository/NotificationRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/java/com/ahuynh/notification_service/service/NotificationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notification-service/notification-service/src/test/java/com/ahuynh/notification_service/NotificationServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/src/main/java/com/ahuynh/registry_service/RegistryServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry-service/registry-service/src/test/java/com/ahuynh/registry_service/RegistryServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/UserServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/configuration/CustomFeignClientConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/controller/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/email/OnRegistrationEmailCompleteEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/email/RegistrationEmailListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/BaseException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/EntityNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/ErrorCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/ErrorResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/InvalidException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/InvalidTokenException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/PasswordIsIncorrectException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/UserAlreadyRegisteredException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/exception/UserIsNotVerifiedException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/entity/UserEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/entity/VerificationTokenEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/entity/role/RoleEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/entity/role/RoleName.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/repository/RoleRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/repository/VerificationTokenRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/request/AvatarRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/request/ChangeDeviceTokenRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/request/ChangePasswordRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/request/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/request/SignUpRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/response/AlbumResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/response/ApiResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/response/JwtResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/response/MessageResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/response/SongResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/model/rest/response/UserResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/service/AuthService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/service/FeignClientSong.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/service/FirebaseService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/java/com/ahuynh/user_service/service/VerificationTokenService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/main/resources/firebase.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/user-service/src/test/java/com/ahuynh/user_service/UserServiceApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +48,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/ahuyn/OneDrive/Desktop/Muzi-Music-Api-Microservice/core-service",
+    "last_opened_file_path": "C:/Users/ahuyn/OneDrive/Desktop/Muzi-Music-Api-Microservice/registry-service",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -272,7 +115,9 @@
       <workItem from="1718260197752" duration="277000" />
       <workItem from="1718260868038" duration="11735000" />
       <workItem from="1718274727237" duration="3708000" />
-      <workItem from="1718287537550" duration="2950000" />
+      <workItem from="1718287537550" duration="3382000" />
+      <workItem from="1718291131092" duration="95000" />
+      <workItem from="1718291364073" duration="288000" />
     </task>
     <servers />
   </component>
