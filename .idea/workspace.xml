@@ -5,8 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf4f0948-9507-4589-9830-fc561066f9a9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/core-service/src/main/java/com/ahuynh/core_service/model/rest/request/NotificationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core-service/src/main/java/com/ahuynh/core_service/service/FeignClientNotification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/config/FCMInitializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/CustomizedResponseEntityExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/ErrorDetails.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/service/FCMService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/resources/firebase.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/ahuynh/core_service/service/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/ahuynh/core_service/service/SongService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/controller/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/BaseException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/EntityNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/ErrorCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/ErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/InvalidException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/InvalidTokenException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/PasswordIsIncorrectException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/UserAlreadyRegisteredException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/exception/UserIsNotVerifiedException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/model/NotificationEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/model/NotificationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/model/NotificationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/model/NotificationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/repository/NotificationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/java/com/ahuynh/notification_service/service/NotificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notification-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +74,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/ahuyn/OneDrive/Desktop/Muzi-Music-Api-Microservice/registry-service",
+    "last_opened_file_path": "C:/Users/ahuyn/OneDrive/Desktop/Muzi-Music-Api-Microservice/core-service",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -117,7 +143,8 @@
       <workItem from="1718274727237" duration="3708000" />
       <workItem from="1718287537550" duration="3382000" />
       <workItem from="1718291131092" duration="95000" />
-      <workItem from="1718291364073" duration="288000" />
+      <workItem from="1718291364073" duration="4338000" />
+      <workItem from="1718327644572" duration="4246000" />
     </task>
     <servers />
   </component>

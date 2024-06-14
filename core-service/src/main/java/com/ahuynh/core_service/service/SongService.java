@@ -3,6 +3,7 @@ package com.ahuynh.core_service.service;
 import com.ahuynh.core_service.exception.EntityNotFoundException;
 import com.ahuynh.core_service.model.entity.AlbumEntity;
 import com.ahuynh.core_service.model.entity.SongEntity;
+import com.ahuynh.core_service.model.rest.request.NotificationRequest;
 import com.ahuynh.core_service.model.rest.request.UpdateSongRequest;
 import com.ahuynh.core_service.model.rest.response.AlbumResponse;
 import com.ahuynh.core_service.model.rest.response.SearchResponse;
@@ -10,6 +11,7 @@ import com.ahuynh.core_service.model.rest.response.SongResponse;
 import com.ahuynh.core_service.repository.AlbumRepository;
 import com.ahuynh.core_service.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.N;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,11 +25,14 @@ public class SongService {
     private final AlbumRepository albumRepository;
     private final FirebaseService firebaseService;
     private final FeignClientUser feignClientUser;
+    private final FeignClientNotification feignClientNotification;
 
     public SongEntity createSong(String name, MultipartFile avatar, MultipartFile file, String lyrics, Long albumIb, String singer) {
         AlbumEntity album = albumRepository.findById(albumIb).orElseThrow(() -> new EntityNotFoundException("No Album with " + albumIb));
         String urlAvatar = firebaseService.upload(avatar, "image/png");
         String urlFile = firebaseService.upload(file, "audio/mpeg");
+        NotificationRequest notificationRequest = new NotificationRequest("title","new song is coming " + name, "muzi-music","123456");
+        feignClientNotification.sendNotification(notificationRequest);
         return songRepository.save(new SongEntity(name, urlAvatar, urlFile, lyrics, album, singer));
     }
 

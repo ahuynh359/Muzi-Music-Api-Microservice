@@ -1,10 +1,12 @@
 package com.ahuynh.notification_service.model;
 
-import java.time.Instant;
+import lombok.Data;
 
+import java.time.Instant;
+@Data
 public class NotificationRequest {
-        private Long userId;
-        private String content;
-        private boolean status = false;
-        private Instant createdAt = Instant.now();
+        private String title;
+        private String body;
+        private String topic;
+        private String token;
 }

@@ -1,25 +1,25 @@
 package com.ahuynh.notification_service.controller;
 
-import com.ahuynh.notification_service.model.ApiResponse;
+import com.ahuynh.notification_service.model.MessageResponse;
 import com.ahuynh.notification_service.model.NotificationRequest;
-import com.ahuynh.notification_service.model.NotificationResponse;
-import com.ahuynh.notification_service.repository.NotificationRepository;
-import com.ahuynh.notification_service.service.NotificationService;
+import com.ahuynh.notification_service.service.FCMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
+import java.util.concurrent.ExecutionException;
+
 @RestController
-@RequestMapping("/notification")
+@RequestMapping("/noti")
+@RequiredArgsConstructor
 public class NotificationController {
-    private final NotificationService notificationService;
 
-   @PostMapping("/create")
-    public  ResponseEntity<?> createNotification(@RequestBody NotificationRequest notificationRequest) {
-       return new ResponseEntity<>(new ApiResponse("Sign in success",notificationService.createNotification(notificationRequest)), HttpStatus.OK);
+    private final FCMService fcmService;
 
-   }
-
+    @PostMapping("/send")
+    public ResponseEntity<?> sendNotification(@RequestBody NotificationRequest request) throws ExecutionException, InterruptedException, ExecutionException {
+        fcmService.sendMessageToToken(request);
+        return new ResponseEntity<>(new MessageResponse( "Notification has been sent."), HttpStatus.OK);
+    }
 }
